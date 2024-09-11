@@ -141,5 +141,11 @@
       <Version>1.0.118</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\character1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\character.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
