@@ -1,44 +1,69 @@
 ﻿using CitizenPortalSouthAfrica.Models;
+using CitizenPortalSouthAfrica.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Data.SQLite;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace CitizenPortalSouthAfrica.ViewModels
 {
-    public class ReportIssuesViewModel : ViewModelBase
+    public class ReportIssuesViewModel : INotifyPropertyChanged
     {
+
+        readonly FileManagementService _fileManagementService;
+
         private string _location;
         private string _category;
         private string _description;
         private ObservableCollection<string> _fileNames;
-        private List<byte[]> _fileData;
+        private ObservableCollection<byte[]> _fileData;
+        private int _formCompletionPercentage;
 
+        private System.Timers.Timer _debounceTimer;
 
         public string Location
         {
             get => _location;
-            set => Set(ref _location, value);
+            set
+            {
+                _location = value;
+                OnPropertyChanged();
+                UpdateFormCompletionPercentage();
+            }
         }
 
         public string Category
         {
             get => _category;
-            set => Set(ref _category, value);
+            set
+            {
+                _category = value;
+                OnPropertyChanged();
+                UpdateFormCompletionPercentage();
+            }
         }
 
         public string Description
         {
             get => _description;
-            set => Set(ref _description, value);
+            set
+            {
+                _description = value;
+                OnPropertyChanged();
+                UpdateFormCompletionPercentage();
+            }
         }
 
         public ObservableCollection<string> FileNames
@@ -47,25 +72,49 @@ namespace CitizenPortalSouthAfrica.ViewModels
             set
             {
                 _fileNames = value;
-                Set(ref _fileNames, value);
+                OnPropertyChanged();
             }
         }
 
-        public List<byte[]> FileData
+        public ObservableCollection<byte[]> FileData
         {
             get => _fileData;
-            set => Set(ref _fileData, value);
+            set
+            {
+                _fileData = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int FormCompletionPercentage
+        {
+            get => _formCompletionPercentage;
+            set
+            {
+                _formCompletionPercentage = value;
+                OnPropertyChanged();
+            }
         }
 
         public ICommand NavigateToHomeCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand AttachFilesCommand { get; }
+        public ICommand RemoveFileCommand { get; }
         public ICommand ExitCommand { get; }
 
         public ReportIssuesViewModel()
         {
+            _fileManagementService = new FileManagementService();
+
             FileNames = new ObservableCollection<string>();
-            FileData = new List<byte[]>();
+            FileData = new ObservableCollection<byte[]>();
+
+            _debounceTimer = new System.Timers.Timer(1000);
+            _debounceTimer.Elapsed += (sender, args) =>
+            {
+                _debounceTimer.Stop();
+                UpdateFormCompletionPercentage();
+            };
 
             Category = "Sanitation";
 
@@ -73,92 +122,63 @@ namespace CitizenPortalSouthAfrica.ViewModels
             NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home"));
             SubmitCommand = new RelayCommand(OnSubmit);
             AttachFilesCommand = new RelayCommand(async () => await AttachFilesAsync());
+            RemoveFileCommand = new RelayCommand<string>(OnRemoveFile);
         }
 
-        private void OnSubmit()
+        private async void OnSubmit()
         {
             var reportIssue = new ReportIssue
             {
                 Location = Location,
                 Category = Category,
                 Description = Description,
-                Files = FileData
+                Files = FileData.ToList()
             };
 
-            MessageBox.Show("Saving the report issue...\n\n");
+            // Save to the local SQLite database using the DbContext
+            var repository = new ReportIssueRepository();
+            await repository.AddReportIssueAsync(reportIssue);
 
-            // Save to database or perform other actions
+            ClearInputs();
+
+            MessageBox.Show("Issue report saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information); 
+        }
+
+        private void ClearInputs()
+        {
+            Location = string.Empty;
+            Category = "Sanitation";
+            Description = string.Empty;
+            FileNames.Clear();
+            FileData.Clear();
         }
 
         private async Task AttachFilesAsync()
         {
-            bool filesProcessed = false;
+            var (files, fileNames) = await _fileManagementService.AttachFilesAsync();
 
-            while (!filesProcessed)
+            // Update collections only if files are processed successfully
+            if (files.Count > 0)
             {
-                var openFileDialog = new OpenFileDialog
+                foreach (var file in files)
                 {
-                    Multiselect = true,
-                    Filter = "Image Files|*.jpg;*.jpeg;*.png|Document Files|*.pdf;*.docx|All Files|*.*",
-                    FilterIndex = 3
-                };
-
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    try
-                    {
-                        // Use a list to temporarily hold the valid file data
-                        var validFiles = new List<byte[]>();
-                        bool hasError = false;
-
-                        foreach (var filePath in openFileDialog.FileNames)
-                        {
-                            if (!IsValidFileType(filePath))
-                            {
-                                MessageBox.Show($"File '{filePath}' is not a supported type. Please upload an image or document.", "File Type Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                hasError = true;
-                                break;
-                            }
-
-                            if (!IsValidFileSize(filePath))
-                            {
-                                MessageBox.Show($"File '{Path.GetFileName(filePath)}' is too large. Maximum allowed size is 25 MB.", "File Size Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                hasError = true;
-                                break;
-                            }
-
-                            try
-                            {
-                                byte[] fileData = await Task.Run(() => File.ReadAllBytes(filePath));
-                                validFiles.Add(fileData);
-                                FileNames.Add(Path.GetFileName(filePath));
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show($"Error reading file '{filePath}': {ex.Message}", "File Read Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                hasError = true;
-                                break;
-                            }
-                        }
-
-                        // Only update the collection if all files are processed successfully
-                        if (!hasError)
-                        {
-                            FileData.Clear();
-                            FileData.AddRange(validFiles);
-                            filesProcessed = true;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"An error occurred while attaching files: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        filesProcessed = false;
-                    }
+                    FileData.Add(file);
                 }
-                else
+
+                foreach (var fileName in fileNames)
                 {
-                    filesProcessed = true; // User cancelled the dialog
+                    FileNames.Add(fileName);
                 }
+            }
+        }
+
+        private void OnRemoveFile(string fileName)
+        {
+            var index = FileNames.IndexOf(fileName);
+            if (index >= 0)
+            {
+                FileNames.RemoveAt(index);
+                FileData.RemoveAt(index);
             }
         }
 
@@ -172,6 +192,31 @@ namespace CitizenPortalSouthAfrica.ViewModels
         {
             var maxSize = 10 * 1024 * 1024; // 10 MB
             return new FileInfo(filePath).Length <= maxSize;
+        }
+
+        private void UpdateFormCompletionPercentage()
+        {
+            int filledFields = 0;
+            int totalFields = 3; // Update this number if you have more fields
+
+            if (!string.IsNullOrWhiteSpace(Location)) filledFields++;
+            if (!string.IsNullOrWhiteSpace(Category)) filledFields++;
+            if (!string.IsNullOrWhiteSpace(Description)) filledFields++;
+
+            FormCompletionPercentage = (int)((float)filledFields / totalFields * 100);
+        }
+
+        private void DebounceUpdate()
+        {
+            _debounceTimer.Stop();
+            _debounceTimer.Start();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
