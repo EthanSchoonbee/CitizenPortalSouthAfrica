@@ -22,6 +22,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
         public RelayCommand NavigateToEventsAndAnnouncementsCommand { get; private set; }
         public RelayCommand NavigateToRequestStatusCommand { get; private set; }
 
+        public ReportIssuesViewModel ReportIssuesViewModel { get; private set; }
+
         public MainWindowViewModel()
         {
             Services.NavigationService.Initialize(this);
@@ -31,8 +33,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
             NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("ReportIssues"));
             //NavigateToEventsAndAnnouncementsCommand = new RelayCommand(OnNavigateToEventsAndAnnouncements);
             //NavigateToRequestStatusCommand = new RelayCommand(OnNavigateToRequestStatus);
-            //SubmitCommand = new RelayCommand(OnSubmit);
 
+            ReportIssuesViewModel = new ReportIssuesViewModel();
             CurrentView = new HomeView();
         }
     }

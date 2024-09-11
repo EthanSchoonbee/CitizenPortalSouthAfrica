@@ -1,18 +1,12 @@
 ﻿using CitizenPortalSouthAfrica.Models;
 using CitizenPortalSouthAfrica.Services;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Data.SQLite;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -30,6 +24,12 @@ namespace CitizenPortalSouthAfrica.ViewModels
         private ObservableCollection<string> _fileNames;
         private ObservableCollection<byte[]> _fileData;
         private int _formCompletionPercentage;
+        private string _guideText;
+        private bool _locationClicked;
+        private bool _categoryClicked;
+        private bool _descriptionClicked;
+
+
 
         private System.Timers.Timer _debounceTimer;
 
@@ -95,6 +95,45 @@ namespace CitizenPortalSouthAfrica.ViewModels
                 OnPropertyChanged();
             }
         }
+        public string GuideText
+        {
+            get => _guideText;
+            set
+            {
+                _guideText = value;
+                OnPropertyChanged(nameof(GuideText));
+            }
+        }
+
+        public bool LocationClicked
+        {
+            get => _locationClicked;
+            set
+            {
+                _locationClicked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool CategoryClicked
+        {
+            get => _categoryClicked;
+            set
+            {
+                _categoryClicked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool DescriptionClicked
+        {
+            get => _descriptionClicked;
+            set
+            {
+                _descriptionClicked = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand NavigateToHomeCommand { get; }
         public ICommand SubmitCommand { get; }
@@ -116,7 +155,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
                 UpdateFormCompletionPercentage();
             };
 
-            Category = "Sanitation";
+            GuideText = "Hi, I'm Guru your local guide!\nBelow is the form for submitting issues.\nClick on the fields to get guidance on what to do.\nStart by filling in the Location of your issue below:";
 
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication());
             NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home"));
@@ -194,16 +233,35 @@ namespace CitizenPortalSouthAfrica.ViewModels
             return new FileInfo(filePath).Length <= maxSize;
         }
 
-        private void UpdateFormCompletionPercentage()
+        public void UpdateFormCompletionPercentage()
         {
+            if (LocationClicked)
+            {
+                GuideText = "Please enter the location where the issue occurred.";
+            }
+            else if (CategoryClicked)
+            {
+                GuideText = "Select the category that best describes the issue.";
+            }
+            else if (DescriptionClicked)
+            {
+                GuideText = "Provide a detailed description of the issue.";
+            }
+
+            // Now calculate form completion percentage based on field values
             int filledFields = 0;
-            int totalFields = 3; // Update this number if you have more fields
+            int totalFields = 3;
 
             if (!string.IsNullOrWhiteSpace(Location)) filledFields++;
             if (!string.IsNullOrWhiteSpace(Category)) filledFields++;
             if (!string.IsNullOrWhiteSpace(Description)) filledFields++;
 
             FormCompletionPercentage = (int)((float)filledFields / totalFields * 100);
+
+            if (FormCompletionPercentage == 100)
+            {
+                GuideText = "Well done! You can now add relevant pictures or documents if needed and submit the form!";
+            }
         }
 
         private void DebounceUpdate()

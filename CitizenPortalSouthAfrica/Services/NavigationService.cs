@@ -41,7 +41,7 @@ namespace CitizenPortalSouthAfrica.Services
                     _mainWindowViewModel.CurrentView = new HomeView();
                     break;
                 case "ReportIssues":
-                    _mainWindowViewModel.CurrentView = new ReportIssuesView();
+                    _mainWindowViewModel.CurrentView = new ReportIssuesView { DataContext = _mainWindowViewModel.ReportIssuesViewModel };
                     break;
                     // other cases
             }

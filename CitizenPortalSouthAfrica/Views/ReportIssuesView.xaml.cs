@@ -9,25 +9,40 @@ namespace CitizenPortalSouthAfrica.Views
     /// </summary>
     public partial class ReportIssuesView : UserControl
     {
+        public ReportIssuesViewModel ViewModel { get; private set; }
+
         public ReportIssuesView()
         {
             InitializeComponent();
-            DataContext = new ReportIssuesViewModel();
+            ViewModel = new ReportIssuesViewModel();
+            DataContext = ViewModel;
         }
 
         private void LocationTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            GuideText.Text = "Please enter the location where the issue occurred.";
+            var viewModel = (ReportIssuesViewModel)DataContext;
+            viewModel.LocationClicked = true;
+            viewModel.CategoryClicked = false;
+            viewModel.DescriptionClicked = false;
+            viewModel.UpdateFormCompletionPercentage();
         }
 
         private void CategoryComboBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            GuideText.Text = "Select the category that best describes the issue.";
+            var viewModel = (ReportIssuesViewModel)DataContext;
+            viewModel.LocationClicked = false;
+            viewModel.CategoryClicked = true;
+            viewModel.DescriptionClicked = false;
+            viewModel.UpdateFormCompletionPercentage();
         }
 
         private void DescriptionRichTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            GuideText.Text = "Provide a detailed description of the issue.";
+            var viewModel = (ReportIssuesViewModel)DataContext;
+            viewModel.LocationClicked = false;
+            viewModel.CategoryClicked = false;
+            viewModel.DescriptionClicked = true;
+            viewModel.UpdateFormCompletionPercentage();
         }
     }
 }
