@@ -22,13 +22,11 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!-- Image -->
                     <Image x:Name="CharacterImage" 
                            Source="pack://application:,,,/Assets/character.png" 
                            Width="50" Height="70" 
                            Grid.Column="0" />
 
-                    <!-- TextBlock -->
                     <TextBlock x:Name="GuideTextBlock" 
                                Text="{Binding GuideText}" 
                                TextWrapping="Wrap"
@@ -49,14 +47,16 @@
                        HorizontalAlignment="Center" />
 
             <TextBlock Text="Issue Location :" FontWeight="Bold"/>
+            <TextBlock Text="{Binding LocationError}" Foreground="Red" />
             <TextBox x:Name="LocationTextBox" 
                          Text="{Binding Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Width="350" Height="30"
+                         Width="350" Height="30" Margin="0,0,0,10"
                          GotFocus="LocationTextBox_GotFocus"/>
 
             <TextBlock Text="Issue category :" FontWeight="Bold"/>
+            <TextBlock Text="{Binding CategoryError}" Foreground="Red" />
             <ComboBox x:Name="CategoryComboBox" 
-                        Width="350" Margin="0,10,0,10"
+                        Width="350" Margin="0,0,0,10"
                         SelectedValue="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         GotFocus="CategoryComboBox_GotFocus" >
                 <ComboBoxItem Content="Sanitation"/>
@@ -65,9 +65,10 @@
             </ComboBox>
 
             <TextBlock Text="Description of issue:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding DescriptionError}" Foreground="Red" />
             <RichTextBox x:Name="DescriptionRichTextBox" 
                             Width="350" Height="100"
-                            Margin="0,10,0,10"
+                            Margin="0,0,0,10"
                             VerticalScrollBarVisibility="Auto"
                             AcceptsReturn="True"
                             GotFocus="DescriptionRichTextBox_GotFocus" >
@@ -77,6 +78,7 @@
                     </Paragraph>
                 </FlowDocument>
             </RichTextBox>
+            
 
             <Button Content="Attach Media" Width="350" Margin="0,0,0,10" 
                     Command="{Binding AttachFilesCommand}" />
@@ -112,10 +114,13 @@
                 </ListBox>
             </ScrollViewer>
 
+            <Button Content="Clear" Width="350" Margin="0,0,0,10" 
+                    Command="{Binding ClearCommand}" />
+
             <Button Content="Submit" Width="350" Margin="0,0,0,10" 
                     Command="{Binding SubmitCommand}" />
 
-            <Button Content="Back to Home" Width="350" 
+            <Button Content="Return" Width="350" 
                     Command="{Binding NavigateToHomeCommand}" />
         </StackPanel>
 

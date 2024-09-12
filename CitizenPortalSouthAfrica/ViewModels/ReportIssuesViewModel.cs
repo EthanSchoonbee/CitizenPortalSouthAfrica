@@ -28,7 +28,9 @@ namespace CitizenPortalSouthAfrica.ViewModels
         private bool _locationClicked;
         private bool _categoryClicked;
         private bool _descriptionClicked;
-
+        private string _locationError;
+        private string _categoryError;
+        private string _descriptionError;
 
 
         private System.Timers.Timer _debounceTimer;
@@ -135,11 +137,42 @@ namespace CitizenPortalSouthAfrica.ViewModels
             }
         }
 
+        public string LocationError
+        {
+            get => _locationError;
+            set
+            {
+                _locationError = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CategoryError
+        {
+            get => _categoryError;
+            set
+            {
+                _categoryError = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DescriptionError
+        {
+            get => _descriptionError;
+            set
+            {
+                _descriptionError = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand NavigateToHomeCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand AttachFilesCommand { get; }
         public ICommand RemoveFileCommand { get; }
         public ICommand ExitCommand { get; }
+        public ICommand ClearCommand { get; }
 
         public ReportIssuesViewModel()
         {
@@ -162,10 +195,38 @@ namespace CitizenPortalSouthAfrica.ViewModels
             SubmitCommand = new RelayCommand(OnSubmit);
             AttachFilesCommand = new RelayCommand(async () => await AttachFilesAsync());
             RemoveFileCommand = new RelayCommand<string>(OnRemoveFile);
+            ClearCommand = new RelayCommand(ClearInputs);
         }
 
         private async void OnSubmit()
         {
+            LocationError = string.Empty;
+            CategoryError = string.Empty;
+            DescriptionError = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(Location))
+            {
+                LocationError = "Location is required.";
+            }
+
+            if (string.IsNullOrWhiteSpace(Category))
+            {
+                CategoryError = "Please select a category.";
+            }
+
+            if (string.IsNullOrWhiteSpace(Description))
+            {
+                DescriptionError = "Description is required.";
+            }
+
+            // If there are any errors, we return early to avoid submitting the form
+            if (!string.IsNullOrWhiteSpace(LocationError) ||
+                !string.IsNullOrWhiteSpace(CategoryError) ||
+                !string.IsNullOrWhiteSpace(DescriptionError))
+            {
+                return;
+            }
+
             var reportIssue = new ReportIssue
             {
                 Location = Location,
@@ -186,7 +247,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
         private void ClearInputs()
         {
             Location = string.Empty;
-            Category = "Sanitation";
+            Category = "";
             Description = string.Empty;
             FileNames.Clear();
             FileData.Clear();
