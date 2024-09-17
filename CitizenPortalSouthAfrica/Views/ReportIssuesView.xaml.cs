@@ -1,6 +1,8 @@
 ﻿using CitizenPortalSouthAfrica.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace CitizenPortalSouthAfrica.Views
 {
@@ -14,8 +16,8 @@ namespace CitizenPortalSouthAfrica.Views
         public ReportIssuesView()
         {
             InitializeComponent();
-            ViewModel = new ReportIssuesViewModel();
-            DataContext = ViewModel;
+            /*ViewModel = new ReportIssuesViewModel();
+            DataContext = ViewModel;*/
         }
 
         private void LocationTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -43,6 +45,13 @@ namespace CitizenPortalSouthAfrica.Views
             viewModel.CategoryClicked = false;
             viewModel.DescriptionClicked = true;
             viewModel.UpdateFormCompletionPercentage();
+        }
+        private void DescriptionRichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true; // Prevent the default action of the Enter key
+            }
         }
     }
 }

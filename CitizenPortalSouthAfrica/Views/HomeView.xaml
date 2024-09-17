@@ -6,21 +6,81 @@
              xmlns:local="clr-namespace:CitizenPortalSouthAfrica.Views"
              mc:Ignorable="d" 
              d:DesignHeight="750" d:DesignWidth="750">
-    <Grid>
-        <local:MenuComponentView DockPanel.Dock="Top" />
-        
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Welcome to the Citizen Portal" FontSize="20" Margin="0,0,0,20" HorizontalAlignment="Center"/>
 
-            <Button Content="Report Issues" Command="{Binding NavigateToReportIssuesCommand}" 
+    <!-- Define reusable styles for buttons in this view -->
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <!-- Set background color to dark green -->
+            <Setter Property="Background" Value="DarkGreen"/>
+            <!-- Set button text color to white -->
+            <Setter Property="Foreground" Value="White"/>
+            <!-- Remove the button border -->
+            <Setter Property="BorderThickness" Value="0"/>
+            <!-- Set font weight and size -->
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="17"/>
+            <!-- Define margins and dimensions for buttons -->
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="Height" Value="35"/>
+            <!-- Change cursor to hand icon when hovering -->
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <!-- Define a trigger to change background color on hover -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Green"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <!-- Include a custom MenuComponentView at the top of the layout -->
+        <local:MenuComponentView DockPanel.Dock="Top" />
+
+        <!-- Center content in the middle of the view -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <!-- Display an image with the South African coat of arms -->
+            <Image x:Name="CharacterImage" 
+                     Source="pack://application:,,,/Assets/south_africa_coat_of_arms.png" 
+                     Width="300" Height="200" 
+                     Margin="0,0,0,20"
+                     ToolTip="Copy Right: The Republic of South Africa"/>
+
+            <!-- Display a welcome message -->
+            <TextBlock Text="Welcome to the Citizen Portal" 
+                       FontSize="25" FontWeight="Bold" 
+                       Foreground="DarkGreen"
+                       Margin="0,0,0,30"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Center"/>
+
+            <!-- A button to navigate to the 'Report Issues' view -->
+            <Button Content="Report Issues" 
+                    Command="{Binding NavigateToReportIssuesCommand}" 
                     Width="300" Height="50" 
-                    Margin="0,0,0,10" />
-            <Button Content="Local Events and Announcements" Command="{Binding NavigateToEventsAndAnnouncementsCommand}" IsEnabled="False" 
+                    Margin="0,0,0,10" 
+                    ToolTip="Fill out an issue report" />
+
+            <!-- A disabled button for 'Local Events and Announcements' with a tooltip for upcoming feature -->
+            <Button Content="Local Events and Announcements" 
+                    Command="{Binding NavigateToEventsAndAnnouncementsCommand}" 
+                    IsEnabled="False" 
                     Width="300" Height="50" 
-                    Margin="0,0,0,10" />
-            <Button Content="Service Request Status" Command="{Binding NavigateToRequestStatusCommand}" IsEnabled="False" 
+                    Margin="0,0,0,10"
+                    ToolTip="Coming soon..." />
+
+            <!-- A disabled button for 'Service Request Status' with a tooltip for upcoming feature -->
+            <Button Content="Service Request Status" 
+                    Command="{Binding NavigateToRequestStatusCommand}" 
+                    IsEnabled="False" 
                     Width="300" Height="50" 
-                    Margin="0,0,0,10" />
+                    Margin="0,0,0,10"
+                    ToolTip="Coming soon..."/>
+
         </StackPanel>
     </Grid>
 </UserControl>

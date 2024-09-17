@@ -55,12 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Resources\IFileManagementService.cs" />
     <Compile Include="Resources\INavigationService.cs" />
     <Compile Include="Services\DatabaseInitialiser.cs" />
     <Compile Include="Services\FileManagementService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ReportIssueRepository.cs" />
+    <Compile Include="Services\ValidationService.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ReportIssuesViewModel.cs" />
     <Compile Include="Views\HomeView.xaml.cs">
@@ -142,10 +144,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\character1.png" />
+    <Resource Include="Assets\character.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\character.png" />
+    <Resource Include="Assets\south_africa_coat_of_arms.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
