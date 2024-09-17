@@ -3,20 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CitizenPortalSouthAfrica.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="600">
-    <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
-            </MenuItem>
-            <MenuItem Header="Navigate">
-                <MenuItem Header="Home" Command="{Binding NavigateToHomeCommand}" />
-                <MenuItem Header="Report Issues" Command="{Binding NavigateToReportIssuesCommand}" />
-                <MenuItem Header="Events and Announcements" Command="{Binding NavigateToEventsAndAnnouncementsCommand}" />
-                <MenuItem Header="Request Status" Command="{Binding NavigateToRequestStatusCommand}" />
-            </MenuItem>
-        </Menu>
-    </DockPanel>
+             d:DesignHeight="20" d:DesignWidth="750">
+
+    <!-- StackPanel to stack items vertically -->
+    <StackPanel>
+
+        <!-- DockPanel used to dock the menu to the top, and the menu is styled with a gray background -->
+        <DockPanel Background="Gray">
+
+            <!-- Menu placed at the top of the DockPanel -->
+            <Menu DockPanel.Dock="Top">
+
+                <!-- 'File' menu with an 'Exit' option -->
+                <MenuItem Header="File">
+                    <!-- 'Exit' command bound to ViewModel's ExitCommand for exiting the application -->
+                    <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+                </MenuItem>
+
+                <!-- 'Navigate' menu to navigate between different views of the application -->
+                <MenuItem Header="Navigate">
+
+                    <!-- 'Home' menu item bound to NavigateToHomeCommand to navigate to the Home view -->
+                    <MenuItem Header="Home" Command="{Binding NavigateToHomeCommand}" />
+
+                    <!-- 'Report Issues' menu item bound to NavigateToReportIssuesCommand to navigate to the Report Issues view -->
+                    <MenuItem Header="Report Issues" Command="{Binding NavigateToReportIssuesCommand}" />
+
+                    <!-- 'Events and Announcements' menu item, currently disabled, will later be used for navigating to Events and Announcements view -->
+                    <MenuItem Header="Events and Announcements" Command="{Binding NavigateToEventsAndAnnouncementsCommand}" IsEnabled="False" />
+
+                    <!-- 'Request Status' menu item, currently disabled, will later be used for navigating to Request Status view -->
+                    <MenuItem Header="Request Status" Command="{Binding NavigateToRequestStatusCommand}" IsEnabled="False" />
+
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+    </StackPanel>
 </UserControl>

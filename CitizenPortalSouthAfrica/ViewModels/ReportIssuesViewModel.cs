@@ -1,177 +1,450 @@
-﻿using CitizenPortalSouthAfrica.Models;
-using GalaSoft.MvvmLight;
+﻿//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/* 
+ * Author:           Ethan Schoonbee
+ * Date Created:     10/09/2024
+ * Last Modified:    17/09/2024
+ * 
+ * Description:
+ * ViewModel for the ReportIssues view in the CitizenPortalSouthAfrica application.
+ * Handles data binding, command execution, and form validation for issue reporting.
+ * Provides functionality for managing file attachments and updating the form's completion percentage.
+ * 
+ * Dependencies:
+ * - FileManagementService: Manages file operations.
+ * - ValidationService: Handles form validation.
+ * - ReportIssueRepository: Interacts with data storage for report issues.
+ * 
+ * Commands:
+ * - NavigateToHomeCommand: Navigates to the home view.
+ * - SubmitCommand: Submits the issue report form.
+ * - AttachFilesCommand: Opens file dialog to attach files.
+ * - RemoveFileCommand: Removes a file from the attachment list.
+ * - ExitCommand: Closes the application.
+ * - ClearCommand: Clears the form inputs and resets the view.
+ * 
+ * Properties:
+ * - Location, Category, Description: Bound to user inputs for reporting issues.
+ * - GuideText: Provides contextual help text based on user interactions.
+ * - LocationError, CategoryError, DescriptionError: Displays validation error messages.
+ * - LocationClicked, CategoryClicked, DescriptionClicked: Flags indicating if fields have been interacted with.
+ * - FormCompletionPercentage: Reflects the completion state of the form.
+ * - AttachedFilesVisibility: Determines visibility of attached files.
+ * 
+ * Methods:
+ * - OnSubmit: Handles the submission of the issue report.
+ * - ValidateForm: Validates the form inputs.
+ * - ClearInputs: Resets all form fields and clears attachments.
+ * - AttachFilesAsync: Asynchronously attaches files to the issue report.
+ * - OnRemoveFile: Removes a file from the list of attachments.
+ * - UpdateFormCompletionPercentage: Updates the form completion percentage based on filled fields.
+ * - GetGuideText: Returns appropriate guide text based on the form state.
+ * - DebounceAction: Handles debounce timing for form updates.
+ * - SetField: A helper method to update properties and raise notifications.
+ * 
+ * Implementation Details:
+ * - Uses ObservableCollection for managing file attachments.
+ * - Implements INotifyPropertyChanged to support data binding.
+ * - Employs MVVM Light’s RelayCommand for command handling.
+ */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+using CitizenPortalSouthAfrica.Models;
+using CitizenPortalSouthAfrica.Services;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace CitizenPortalSouthAfrica.ViewModels
 {
-    public class ReportIssuesViewModel : ViewModelBase
+    public class ReportIssuesViewModel : INotifyPropertyChanged
     {
-        private string _location;
-        private string _category;
-        private string _description;
-        private ObservableCollection<string> _fileNames;
-        private List<byte[]> _fileData;
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        /* 
+         * Fields and Properties
+         * 
+         * Description:
+         * This section defines the private fields, public properties, and commands used in the ReportIssuesViewModel class.
+         * 
+         * Private Fields:
+         * - _fileManagementService: Service responsible for managing file operations.
+         * - _validationService: Service used for validating form inputs.
+         * - _repository: Repository for interacting with data storage related to issue reports.
+         * - _location, _category, _description: Fields to store user input for location, category, and description of the report.
+         * - _guideText: Provides contextual help text based on user interactions.
+         * - _locationError, _categoryError, _descriptionError: Stores validation error messages for each input field.
+         * - _locationClicked, _categoryClicked, _descriptionClicked: Flags indicating if a field has been interacted with.
+         * - _formCompletionPercentage: Represents the percentage of the form that has been completed based on filled fields.
+         * - _debounceTimer: Timer used to handle debounce actions for form updates.
+         * 
+         * Public Properties:
+         * - FileNames: ObservableCollection of file names attached to the report.
+         * - FileData: ObservableCollection of file data associated with the attached files.
+         * - Location, Category, Description: Properties bound to user input fields for the report.
+         * - GuideText: Property to hold the current guide text.
+         * - LocationError, CategoryError, DescriptionError: Properties to display validation errors.
+         * - LocationClicked, CategoryClicked, DescriptionClicked: Properties to track if fields have been interacted with.
+         * - FormCompletionPercentage: Property representing the form's completion percentage.
+         * - AttachedFilesVisibility: Property to determine the visibility of the attached files section.
+         * 
+         * Commands:
+         * - NavigateToHomeCommand: Command to navigate back to the home view.
+         * - SubmitCommand: Command to submit the issue report.
+         * - AttachFilesCommand: Command to open a file dialog for attaching files.
+         * - RemoveFileCommand: Command to remove an attached file.
+         * - ExitCommand: Command to close the application.
+         * - ClearCommand: Command to clear all form inputs and attachments.
+         */
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+        private readonly FileManagementService _fileManagementService; // Service for file operations
+        private readonly ValidationService _validationService; // Service for form validation
+        private readonly ReportIssueRepository _repository; // Repository for report issue data
 
+        // Fields to store user inputs and form state
+        private string _location; // Location field value
+        private string _category; // Category field value
+        private string _description; // Description field value
+        private string _guideText; // Guide text for contextual help
+        private string _locationError; // Error message for location field
+        private string _categoryError; // Error message for category field
+        private string _descriptionError; // Error message for description field
+
+        private bool _locationClicked; // Flag to check if location field has been interacted with
+        private bool _categoryClicked; // Flag to check if category field has been interacted with
+        private bool _descriptionClicked; // Flag to check if description field has been interacted with
+
+        public int _formCompletionPercentage; // Percentage of form completion
+
+        private System.Timers.Timer _debounceTimer; // Timer for debounce actions
+
+        // Collections for managing attached files
+        public ObservableCollection<string> FileNames { get; set; } // List of file names
+        public ObservableCollection<byte[]> FileData { get; set; } // List of file data
+
+        // Location property with validation and update handling
         public string Location
         {
-            get => _location;
-            set => Set(ref _location, value);
-        }
-
-        public string Category
-        {
-            get => _category;
-            set => Set(ref _category, value);
-        }
-
-        public string Description
-        {
-            get => _description;
-            set => Set(ref _description, value);
-        }
-
-        public ObservableCollection<string> FileNames
-        {
-            get => _fileNames;
+            get => _location; // Get current value of location
             set
             {
-                _fileNames = value;
-                Set(ref _fileNames, value);
+                // Update field and raise property changed notification
+                SetField(ref _location, value, nameof(Location), UpdateFormCompletionPercentage);
+                LocationError = string.Empty; // Clear error message when value changes
             }
         }
 
-        public List<byte[]> FileData
+        // Category property with validation and update handling
+        public string Category
         {
-            get => _fileData;
-            set => Set(ref _fileData, value);
+            get => _category; // Get current value of category
+            set
+            {
+                // Update field and raise property changed notification
+                SetField(ref _category, value, nameof(Category), UpdateFormCompletionPercentage);
+                CategoryError = string.Empty; // Clear error message when value changes
+            }
         }
 
-        public ICommand NavigateToHomeCommand { get; }
-        public ICommand SubmitCommand { get; }
-        public ICommand AttachFilesCommand { get; }
-        public ICommand ExitCommand { get; }
+        // Description property with validation and update handling
+        public string Description
+        {
+            get => _description; // Get current value of description
+            set
+            {
+                // Update field and raise property changed notification
+                SetField(ref _description, value, nameof(Description), UpdateFormCompletionPercentage);
+                DescriptionError = string.Empty; // Clear error message when value changes
+            }
+        }
 
+        // Guide text property for contextual help
+        public string GuideText
+        {
+            get => _guideText; // Get current guide text
+            set => SetField(ref _guideText, value); // Update field and raise property changed notification
+        }
+
+        // Error message properties for each input field
+        public string LocationError
+        {
+            get => _locationError; // Get error message for location field
+            set => SetField(ref _locationError, value); // Update error message and raise property changed notification
+        }
+
+        public string CategoryError
+        {
+            get => _categoryError; // Get error message for category field
+            set => SetField(ref _categoryError, value); // Update error message and raise property changed notification
+        }
+
+        public string DescriptionError
+        {
+            get => _descriptionError; // Get error message for description field
+            set => SetField(ref _descriptionError, value); // Update error message and raise property changed notification
+        }
+
+        // Flags to track if fields have been interacted with
+        public bool LocationClicked
+        {
+            get => _locationClicked; // Get if location field has been clicked
+            set => SetField(ref _locationClicked, value); // Update flag and raise property changed notification
+        }
+
+        public bool CategoryClicked
+        {
+            get => _categoryClicked; // Get if category field has been clicked
+            set => SetField(ref _categoryClicked, value); // Update flag and raise property changed notification
+        }
+
+        public bool DescriptionClicked
+        {
+            get => _descriptionClicked; // Get if description field has been clicked
+            set => SetField(ref _descriptionClicked, value); // Update flag and raise property changed notification
+        }
+
+        // Form completion percentage based on filled fields
+        public int FormCompletionPercentage
+        {
+            get => _formCompletionPercentage; // Get form completion percentage
+            set => SetField(ref _formCompletionPercentage, value, nameof(FormCompletionPercentage)); // Update percentage and raise property changed notification
+        }
+
+        // Visibility of the attached files section
+        public Visibility AttachedFilesVisibility
+        {
+            get => FileNames.Any() ? Visibility.Visible : Visibility.Collapsed; // Determine visibility based on the presence of attached files
+        }
+
+        // Updates visibility of attached files section when files are added or removed
+        private void OnFileNamesChanged()
+        {
+            OnPropertyChanged(nameof(AttachedFilesVisibility)); // Notify of change in file names to update visibility
+        }
+
+        // Commands for user actions
+        public ICommand NavigateToHomeCommand { get; } // Command to navigate to the home view
+        public ICommand SubmitCommand { get; } // Command to submit the issue report
+        public ICommand AttachFilesCommand { get; } // Command to attach files
+        public ICommand RemoveFileCommand { get; } // Command to remove an attached file
+        public ICommand ExitCommand { get; } // Command to exit the application
+        public ICommand ClearCommand { get; } // Command to clear form inputs and attachments
+
+        // Constructor initializing services and commands
         public ReportIssuesViewModel()
         {
+            // Initialize services and repository
+            _fileManagementService = new FileManagementService();
+            _validationService = new ValidationService();
+            _repository = new ReportIssueRepository();
+
+            // Initialize collections
             FileNames = new ObservableCollection<string>();
-            FileData = new List<byte[]>();
+            FileData = new ObservableCollection<byte[]>();
 
-            Category = "Sanitation";
+            // Set up debounce timer
+            _debounceTimer = new System.Timers.Timer(1000);
+            _debounceTimer.Elapsed += (sender, args) => DebounceAction(); // Attach debounce action to timer
 
-            ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication());
-            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home"));
-            SubmitCommand = new RelayCommand(OnSubmit);
-            AttachFilesCommand = new RelayCommand(async () => await AttachFilesAsync());
+            // Set initial guide text
+            GuideText = Constants.GuideText.InitialGuide;
+
+            // Initialize commands
+            ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application
+            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home")); // Command to navigate to home
+            SubmitCommand = new RelayCommand(OnSubmit); // Command to submit the report
+            AttachFilesCommand = new RelayCommand(async () => await AttachFilesAsync()); // Command to attach files
+            RemoveFileCommand = new RelayCommand<string>(OnRemoveFile); // Command to remove a file
+            ClearCommand = new RelayCommand(ClearInputs); // Command to clear inputs
         }
 
-        private void OnSubmit()
+
+        // O(1) complexity: Submits the report after validating the form
+        private async void OnSubmit()
         {
+            // Validate the form before proceeding
+            if (!ValidateForm())
+            {
+                return;
+            }
+
+            // Create a new ReportIssue object with the provided data
             var reportIssue = new ReportIssue
             {
                 Location = Location,
                 Category = Category,
                 Description = Description,
-                Files = FileData
+                Files = FileData.ToList()
             };
 
-            MessageBox.Show("Saving the report issue...\n\n");
+            // Save the report to the repository asynchronously
+            await _repository.AddReportIssueAsync(reportIssue);
 
-            // Save to database or perform other actions
+            // Clear the input fields after submission
+            ClearInputs();
+
+            // Notify the user that the report was saved successfully
+            MessageBox.Show(Constants.SuccessMessages.IssueSaved, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        // Validates the form fields and sets error messages if validation fails
+        private bool ValidateForm()
+        {
+            // Validate the form fields using the ValidationService
+            var isValid = _validationService.ValidateForm(Location, Category, Description,
+                          out var locationError, out var categoryError, out var descriptionError);
+
+            // Set error messages for invalid fields
+            LocationError = locationError;
+            CategoryError = categoryError;
+            DescriptionError = descriptionError;
+
+            // Return the result of the validation
+            return isValid;
+        }
+
+        // O(1) complexity: Clears all input fields and attached files
+        private void ClearInputs()
+        {
+            // Reset location, category, and description fields
+            Location = string.Empty;
+            Category = string.Empty;
+            Description = string.Empty;
+
+            // Clear the file collections
+            FileNames.Clear();
+            FileData.Clear();
+
+            // Update UI based on the changes to attached files
+            OnFileNamesChanged();
+
+            // Reset the guide text to the initial state
+            GuideText = Constants.GuideText.InitialGuide;
+        }
+
+        // O(n) complexity: Asynchronously attaches files and updates the file collections
         private async Task AttachFilesAsync()
         {
-            bool filesProcessed = false;
+            // Use the FileManagementService to retrieve files and their names
+            var (files, fileNames) = await _fileManagementService.AttachFilesAsync();
 
-            while (!filesProcessed)
+            // If files were selected, update the FileData and FileNames collections
+            if (files.Any())
             {
-                var openFileDialog = new OpenFileDialog
+                // Add each file to the FileData collection
+                foreach (var file in files)
                 {
-                    Multiselect = true,
-                    Filter = "Image Files|*.jpg;*.jpeg;*.png|Document Files|*.pdf;*.docx|All Files|*.*",
-                    FilterIndex = 3
-                };
-
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    try
-                    {
-                        // Use a list to temporarily hold the valid file data
-                        var validFiles = new List<byte[]>();
-                        bool hasError = false;
-
-                        foreach (var filePath in openFileDialog.FileNames)
-                        {
-                            if (!IsValidFileType(filePath))
-                            {
-                                MessageBox.Show($"File '{filePath}' is not a supported type. Please upload an image or document.", "File Type Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                hasError = true;
-                                break;
-                            }
-
-                            if (!IsValidFileSize(filePath))
-                            {
-                                MessageBox.Show($"File '{Path.GetFileName(filePath)}' is too large. Maximum allowed size is 25 MB.", "File Size Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                hasError = true;
-                                break;
-                            }
-
-                            try
-                            {
-                                byte[] fileData = await Task.Run(() => File.ReadAllBytes(filePath));
-                                validFiles.Add(fileData);
-                                FileNames.Add(Path.GetFileName(filePath));
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show($"Error reading file '{filePath}': {ex.Message}", "File Read Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                hasError = true;
-                                break;
-                            }
-                        }
-
-                        // Only update the collection if all files are processed successfully
-                        if (!hasError)
-                        {
-                            FileData.Clear();
-                            FileData.AddRange(validFiles);
-                            filesProcessed = true;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"An error occurred while attaching files: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        filesProcessed = false;
-                    }
+                    FileData.Add(file);
                 }
-                else
+
+                // Add each filename to the FileNames collection
+                foreach (var fileName in fileNames)
                 {
-                    filesProcessed = true; // User cancelled the dialog
+                    FileNames.Add(fileName);
                 }
+
+                // Notify that the attached files section has changed
+                OnFileNamesChanged();
             }
         }
 
-        private bool IsValidFileType(string filePath)
+        // O(1) complexity: Removes a file from the attached files list based on its name
+        private void OnRemoveFile(string fileName)
         {
-            var validExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf", ".docx" };
-            return validExtensions.Any(ext => filePath.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
+            // Find the index of the file in the FileNames collection
+            var index = FileNames.IndexOf(fileName);
+
+            // If the file exists, remove it from both the FileNames and FileData collections
+            if (index >= 0)
+            {
+                FileNames.RemoveAt(index);
+                FileData.RemoveAt(index);
+
+                // Update the UI to reflect the changes
+                OnFileNamesChanged();
+            }
         }
 
-        private bool IsValidFileSize(string filePath)
+        // O(1) complexity: Updates the percentage of form completion based on filled fields
+        public void UpdateFormCompletionPercentage()
         {
-            var maxSize = 10 * 1024 * 1024; // 10 MB
-            return new FileInfo(filePath).Length <= maxSize;
+            const int numberOfFields = 3;
+
+            // Count the number of non-empty fields (location, category, description)
+            var filledFields = new[] { Location, Category, Description }
+                .Count(field => !string.IsNullOrWhiteSpace(field));
+
+            // Calculate the form completion percentage
+            FormCompletionPercentage = (int)((float)filledFields / numberOfFields * 100);
+
+            // Update the guide text based on form completion
+            GuideText = GetGuideText();
         }
+
+        // Returns the appropriate guide text based on form completion and clicked fields
+        private string GetGuideText()
+        {
+            // If the form is fully completed, show the completion guide
+            if (FormCompletionPercentage == 100)
+            {
+                return Constants.GuideText.CompletionGuide;
+            }
+
+            // Display specific guide text based on which field has been clicked
+            if (LocationClicked)
+            {
+                return Constants.GuideText.LocationGuide;
+            }
+            if (CategoryClicked)
+            {
+                return Constants.GuideText.CategoryGuide;
+            }
+            if (DescriptionClicked)
+            {
+                return Constants.GuideText.DescriptionGuide;
+            }
+
+            // Return the default guide text if none of the fields were clicked
+            return GuideText;
+        }
+
+        // O(1) complexity: Debounce method to delay actions by resetting the timer
+        private void DebounceAction()
+        {
+            // Stop and restart the debounce timer
+            _debounceTimer.Stop();
+            _debounceTimer.Start();
+        }
+
+        // Helper method to update a field's value, trigger property changes, and invoke additional actions
+        private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, Action onChanged = null)
+        {
+            // Only update the field if the value has changed
+            if (!Equals(field, value))
+            {
+                field = value;
+
+                // Notify the UI that the property has changed
+                OnPropertyChanged(propertyName);
+
+                // Invoke any additional actions (e.g., updating form completion)
+                onChanged?.Invoke();
+            }
+        }
+
+        // Event to notify the UI of property changes
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Method to raise the PropertyChanged event
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
