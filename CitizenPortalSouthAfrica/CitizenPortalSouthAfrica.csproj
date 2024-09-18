@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>world.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -148,6 +151,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\south_africa_coat_of_arms.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\world.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="world.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
