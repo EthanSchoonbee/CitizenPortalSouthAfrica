@@ -66,8 +66,12 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ReportIssueRepository.cs" />
     <Compile Include="Services\ValidationService.cs" />
+    <Compile Include="ViewModels\EventsAndAnoncementsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ReportIssuesViewModel.cs" />
+    <Compile Include="Views\EventsAndAnnouncementsView.xaml.cs">
+      <DependentUpon>EventsAndAnnouncementsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
@@ -89,6 +93,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\EventsAndAnnouncementsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
