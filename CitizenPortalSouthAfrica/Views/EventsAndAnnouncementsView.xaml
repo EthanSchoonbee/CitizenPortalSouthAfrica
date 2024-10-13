@@ -53,6 +53,7 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <!-- Header text for the form -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
             <TextBlock Text="Local Events and Announcements" 
                    FontSize="25" FontWeight="Bold" 
                    Foreground="DarkGreen"
