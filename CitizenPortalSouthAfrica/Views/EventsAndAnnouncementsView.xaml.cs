@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CitizenPortalSouthAfrica.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,19 @@ namespace CitizenPortalSouthAfrica.Views
         public EventsAndAnnouncementsView()
         {
             InitializeComponent();
+            this.Loaded += EventsAndAnnouncementsView_Loaded;
+        }
+
+        private void EventsAndAnnouncementsView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is EventsAndAnoncementsViewModel viewModel)
+            {
+                // Only load data if events or announcements are empty
+                if (!viewModel.Events.Any() && !viewModel.Announcements.Any())
+                {
+                    _ = viewModel.LoadEventAndAnnouncementDataAsync();
+                }
+            }
         }
     }
 }

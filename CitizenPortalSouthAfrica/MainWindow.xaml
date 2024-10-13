@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Citizen Portal" Height="820" Width="700"
+        Title="Citizen Portal" Height="850" Width="850"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <ContentControl Content="{Binding CurrentView}" />
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Assets/backgroundImage.png" Stretch="UniformToFill" Opacity="0.2"/>
+        </Grid.Background>
     </Grid>
 </Window>

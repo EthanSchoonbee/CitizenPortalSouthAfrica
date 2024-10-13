@@ -15,6 +15,7 @@
 using CitizenPortalSouthAfrica.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace CitizenPortalSouthAfrica.ViewModels
@@ -88,6 +89,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
             NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home"));
             NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("ReportIssues"));
             NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("EventsAndAnnouncements"));
+            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show("This feature is currently under development. Please check back later!",
+                                                                                    "Feature Not Available",
+                                                                                    MessageBoxButton.OK,
+                                                                                    MessageBoxImage.Exclamation));
             // Uncomment and implement these commands when needed
 
             // Initialize the ReportIssuesViewModel

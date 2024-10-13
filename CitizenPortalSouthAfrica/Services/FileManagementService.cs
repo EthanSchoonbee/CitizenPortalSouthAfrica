@@ -34,7 +34,10 @@ namespace CitizenPortalSouthAfrica.Services
     {
         // Define maximum allowed file size (25 MB) and valid file extensions
         private const int MaxFileSize = 25 * 1024 * 1024; // 25 MB
-        private readonly string[] ValidExtensions = { ".jpg", ".jpeg", ".png", ".pdf", ".docx" };
+        private readonly string[] ValidExtensions = {
+            ".jpg", ".jpeg", ".png", ".pdf", ".docx",
+            ".mp4", ".mkv", ".txt", ".xlsx", ".pptx", ".zip"
+        };
 
         /// <summary>
         /// Asynchronous task to allow users to attach and validate files for report issues.
@@ -98,7 +101,7 @@ namespace CitizenPortalSouthAfrica.Services
             return new OpenFileDialog
             {
                 Multiselect = true,  // Allows multiple file selection
-                Filter = "Image Files|*.jpg;*.jpeg;*.png|Document Files|*.pdf;*.docx|All Files|*.*",
+                Filter = "Image Files|*.jpg;*.jpeg;*.png|Document Files|*.pdf;*.docx|Text Files|*.txt|Excel Files|*.xlsx|PowerPoint Files|*.pptx|Video Files|*.mp4;*.mkv|Zip Files|*.zip|All Files|*.*",
                 FilterIndex = 3
             };
         }

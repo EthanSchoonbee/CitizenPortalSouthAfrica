@@ -11,6 +11,8 @@
     <!-- Define resources for styling components globally -->
     <UserControl.Resources>
 
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
         <!-- Global button style for consistent appearance -->
         <Style TargetType="Button">
             <Setter Property="Background" Value="DarkGreen"/>
@@ -22,7 +24,6 @@
             <Setter Property="Width" Value="350"/>
             <Setter Property="Height" Value="35"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="BorderThickness" Value="0"/>
             <Style.Triggers>
                 <!-- Change background when the button is hovered over -->
                 <Trigger Property="IsMouseOver" Value="True">
@@ -43,25 +44,128 @@
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
+        <Style x:Key="OverlayTextBlock" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Assets/backgroundImage.png" Stretch="UniformToFill" Opacity="0.2"/>
+        </Grid.Background>
+
         <!-- Include the menu component at the top of the view -->
         <local:MenuComponentView DockPanel.Dock="Top" />
 
-        <!-- StackPanel for stacking form elements vertically -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <!-- Header text for the form -->
+        <!-- StackPanel for stacking form elements vertically -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
             <TextBlock Text="Local Events and Announcements" 
-                   FontSize="25" FontWeight="Bold" 
-                   Foreground="DarkGreen"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Center" />
+                       FontSize="25" FontWeight="Bold" 
+                       Foreground="DarkGreen"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Center"
+                       Margin="0,20,0,20"/>
 
-            
+            <StackPanel Orientation="Horizontal" Margin="15,0,15,10">
+                <TextBox Width="670" Height="30" FontSize="20" Text="{Binding SelectedCategory, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Content="Search" Command="{Binding FilterCommand}" Margin="5,0,0,0" Width="116"/>
+            </StackPanel>
 
+            <Grid Margin="10" Width="800" Height="600">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Events Section -->
+                <Border Grid.Column="0" CornerRadius="10" BorderBrush="DarkGreen" BorderThickness="1" Margin="10" Background="White">
+                    <StackPanel  Margin="5">
+                        <TextBlock Text="Events" Style="{StaticResource HeaderTextBlock}" Margin="0,0,0,10"/>
+                        <TextBlock Text="No event found"
+                   Style="{StaticResource OverlayTextBlock}" 
+                   Visibility="{Binding NoEventResultsFound, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <ScrollViewer 
+                                Height="550" 
+                                Margin="0,0,0,10"
+                                VerticalScrollBarVisibility="Hidden"
+                                HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding Events}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="10" Background="FloralWhite" Margin="5" Padding="10"
+                                                MaxHeight="200" MaxWidth="350" VerticalAlignment="Top">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="Black" BlurRadius="6" ShadowDepth="3" Opacity="0.5" />
+                                            </Border.Effect>
+                                            <StackPanel>
+                                                <Image Source="{Binding ImageSource}" Height="100" Margin="0,0,0,5" Stretch="UniformToFill" />
+                                                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" TextWrapping="Wrap" />
+                                                <TextBlock Text="{Binding Category}" FontWeight="Bold" FontSize="12" Foreground="ForestGreen" />
+                                                <TextBlock Text="{Binding Date, StringFormat='{}{0:MMMM dd, yyyy}'}" FontSize="12" Foreground="Gray" />
+                                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxHeight="60" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+                <!-- Announcements Section -->
+                <Border Grid.Column="1" CornerRadius="10" BorderBrush="DarkGreen" BorderThickness="1" Margin="10" Background="White" >
+                    <StackPanel  Margin="10" Background="White" >
+                        <TextBlock Text="Announcements" Style="{StaticResource HeaderTextBlock}" Background="White"  Margin="0,0,0,10"/>
+                        <TextBlock  Text="No announcements found"
+                                    Style="{StaticResource OverlayTextBlock}" 
+                                    Visibility="{Binding NoAnnouncementResultsFound, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <ScrollViewer Height="550"
+                                    VerticalScrollBarVisibility="Hidden"
+                                    HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding Announcements}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="10" Background="FloralWhite" Margin="5" Padding="10"
+                                                MaxHeight="200" MaxWidth="350" VerticalAlignment="Top">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="Black" BlurRadius="6" ShadowDepth="3" Opacity="0.5" />
+                                            </Border.Effect>
+                                            <StackPanel>
+                                                <Image Source="{Binding ImageSource}" Height="100" Margin="0,0,0,5" Stretch="UniformToFill" />
+                                                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" TextWrapping="Wrap" />
+                                                <TextBlock Text="{Binding Category}" FontWeight="Bold" FontSize="12" Foreground="ForestGreen" />
+                                                <TextBlock Text="{Binding Date, StringFormat='{}{0:MMMM dd, yyyy}'}" FontSize="12" Foreground="Gray" />
+                                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxHeight="60" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Return Button -->
+            <Button Content="Return" 
+                    Command="{Binding NavigateToHomeCommand}" 
+                    Margin="0,10,0,0"
+            />
         </StackPanel>
     </Grid>
 </UserControl>

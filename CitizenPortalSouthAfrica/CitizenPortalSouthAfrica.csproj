@@ -58,10 +58,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Announcement.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Event.cs" />
     <Compile Include="Resources\IFileManagementService.cs" />
     <Compile Include="Resources\INavigationService.cs" />
     <Compile Include="Services\DatabaseInitialiser.cs" />
+    <Compile Include="Services\EventAndAnnouncementRepository.cs" />
     <Compile Include="Services\FileManagementService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ReportIssueRepository.cs" />
@@ -165,6 +168,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="world.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\audience-1853662_640.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\istockphoto-1401607744-612x612.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\backgroundImage.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
