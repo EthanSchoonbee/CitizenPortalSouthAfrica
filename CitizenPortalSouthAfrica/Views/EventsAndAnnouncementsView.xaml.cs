@@ -77,7 +77,7 @@ namespace CitizenPortalSouthAfrica.Views
                 if (viewModel != null)
                 {
                     viewModel.SearchedValue = selectedSuggestion; // Update the SearchedValue property
-                    viewModel.FilterEventsAndAnnouncements(); // Filter events and announcements based on searched value
+                    viewModel.PerformSearch(); // Filter events and announcements based on searched value
                     listBox.SelectedItem = null; // Deselect the item to allow for re-selection
                 }
             }
