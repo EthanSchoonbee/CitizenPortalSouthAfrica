@@ -149,6 +149,9 @@
                                     <DataTemplate>
                                         <Border CornerRadius="10" Background="FloralWhite" Margin="5" Padding="10"
                                                 MaxWidth="300" VerticalAlignment="Top" BorderThickness="2" BorderBrush="Wheat">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.5" />
+                                            </Border.Effect>
                                             <StackPanel>
                                                 <Image Source="{Binding ImageSource}" Height="100" Margin="0,0,0,5" Stretch="UniformToFill" />
                                                 <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" TextWrapping="Wrap" />
@@ -182,6 +185,9 @@
                                     <DataTemplate>
                                         <Border CornerRadius="10" Background="FloralWhite" Margin="5" Padding="10"
                                                 MaxWidth="300" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Wheat">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="5" Opacity="0.5" />
+                                            </Border.Effect>
                                             <StackPanel>
                                                 <Image Source="{Binding ImageSource}" Height="100" Margin="0,0,0,5" Stretch="UniformToFill" />
                                                 <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16" TextWrapping="Wrap" />
@@ -201,42 +207,54 @@
                 <Border Grid.Column="2" Margin="10,0,10,0" BorderBrush="DarkGreen" BorderThickness="3" Background="White">
                     <StackPanel Margin="5">
                         <TextBlock Text="History:" Style="{StaticResource HeaderTextBlock}" Margin="0,0,0,10"/>
-                        <Border Margin="10,0,10,10" BorderBrush="DarkGreen" BorderThickness="0.5" Background="White">
+                        <Border CornerRadius="8" Margin="10,0,10,10" BorderBrush="DarkGreen" BorderThickness="1" Background="White">
                             <StackPanel>
                                 <TextBlock Text="Nothing here yet" 
-                                       Style="{StaticResource OverlayTextBlock}" 
-                                       Visibility="{Binding IsHistoryEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                           Style="{StaticResource OverlayTextBlock}" 
+                                           Visibility="{Binding IsHistoryEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <ListBox ItemsSource="{Binding SearchHistory}" 
-                                     HorizontalAlignment="Stretch" 
-                                     Margin="2,0,2,0" 
-                                     BorderThickness="0"
-                                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                     SelectionChanged="SearchSuggestionsListBox_SelectionChanged"
-                                     Visibility="{Binding IsHistoryEmpty, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                         Margin="2,2,2,0"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                         SelectionChanged="SearchSuggestionsListBox_SelectionChanged"
+                                         Visibility="{Binding IsHistoryEmpty, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" 
+                                         d:ItemsSource="{d:SampleData ItemCount=5}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" FontSize="14" Foreground="Blue" />
+                                            <Border Background="White" CornerRadius="5" Margin="0">
+                                                <Border.Effect>
+                                                    <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="3" Opacity="0.5" />
+                                                </Border.Effect>
+                                                <TextBlock Text="{Binding}" FontSize="14" Foreground="Blue" Padding="3" />
+                                            </Border>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </StackPanel>
                         </Border>
                         <TextBlock Text="You may also like:" Style="{StaticResource HeaderTextBlock}" Margin="0,10,0,10"/>
-                        <Border Margin="10,0,10,0" BorderBrush="DarkGreen" BorderThickness="0.5" Background="White">
+                        <Border CornerRadius="8" Margin="10,0,10,0" BorderBrush="DarkGreen" BorderThickness="1" Background="White">
                             <StackPanel>
                                 <TextBlock Text="Nothing here yet" 
                                            Style="{StaticResource OverlayTextBlock}" 
                                            Visibility="{Binding IsRecommendationsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <ListBox ItemsSource="{Binding SearchRecommendations}" 
                                          HorizontalAlignment="Stretch" 
-                                         Margin="2,0,2,0" 
+                                         Margin="2,2,2,0" 
                                          BorderThickness="0"
+                                         Background="Transparent"
                                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                          SelectionChanged="SearchSuggestionsListBox_SelectionChanged"
-                                         Visibility="{Binding IsRecommendationsEmpty, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                         Visibility="{Binding IsRecommendationsEmpty, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" d:ItemsSource="{d:SampleData ItemCount=5}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" FontSize="14" Foreground="Blue" />
+                                            <Border Background="White" CornerRadius="5" Margin="0">
+                                                <Border.Effect>
+                                                    <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="3" Opacity="0.5" />
+                                                </Border.Effect>
+                                                <TextBlock Text="{Binding}" FontSize="14" Foreground="Blue" Padding="3" />
+                                            </Border>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
