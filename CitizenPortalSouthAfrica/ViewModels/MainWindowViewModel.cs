@@ -12,6 +12,7 @@
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+using CitizenPortalSouthAfrica.Models;
 using CitizenPortalSouthAfrica.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -86,11 +87,11 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
             // Set up commands for navigation and application exit
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication());
-            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home"));
-            NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("ReportIssues"));
-            NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("EventsAndAnnouncements"));
-            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show("This feature is currently under development. Please check back later!",
-                                                                                    "Feature Not Available",
+            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
+            NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.ReportIssues));
+            NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
+            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage,
+                                                                                    Constants.ErrorMessages.FeatureNotAvaliableHeader,
                                                                                     MessageBoxButton.OK,
                                                                                     MessageBoxImage.Exclamation));
             // Uncomment and implement these commands when needed

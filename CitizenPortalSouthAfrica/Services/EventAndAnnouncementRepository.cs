@@ -30,19 +30,23 @@ namespace CitizenPortalSouthAfrica.Services
     public class EventAndAnnouncementRepository
     {
         // Fetches the SQLite database connection string
-        private readonly string _connectionString = $"Data Source={AppDomain.CurrentDomain.BaseDirectory}/IssueReports.db";
-        private readonly SQLiteConnection _connection;
+        private readonly string _connectionString = $"Data Source={AppDomain.CurrentDomain.BaseDirectory}/{Constants.Database.DatabaseFileName}"; // Connection string for the SQLite database
+        private readonly SQLiteConnection _connection; // SQLite connection object
 
-        public SortedDictionary<string, List<Event>> SortedEvents { get; private set; }
-        public SortedDictionary<string, List<Announcement>> SortedAnnouncements { get; private set; }
+        // Sorted dictionaries to hold events and announcements categorized by their categories
+        public SortedDictionary<string, List<Event>> SortedEvents { get; private set; } // Holds sorted events
+        public SortedDictionary<string, List<Announcement>> SortedAnnouncements { get; private set; } // Holds sorted announcements
 
-
+        /// <summary>
+        /// Initializes a new instance of the EventAndAnnouncementRepository class.
+        /// Populates the sorted dictionaries with test data.
+        /// </summary>
         public EventAndAnnouncementRepository()
         {
-            SortedEvents = new SortedDictionary<string, List<Event>>();
-            SortedAnnouncements = new SortedDictionary<string, List<Announcement>>();
+            SortedEvents = new SortedDictionary<string, List<Event>>(); // Initialize the sorted events dictionary
+            SortedAnnouncements = new SortedDictionary<string, List<Announcement>>(); // Initialize the sorted announcements dictionary
 
-            SeedTestData();
+            SeedTestData(); // Seed the test data into the repository
         }
 
         public void SeedTestData()
@@ -194,55 +198,42 @@ namespace CitizenPortalSouthAfrica.Services
         /// <returns>A list of Event models.</returns>
         public async Task<List<Event>> GetAllEventsAsync()
         {
-            Console.WriteLine(_connectionString);
-
-            var events = new List<Event>();
+            var events = new List<Event>(); // List to hold events retrieved from the database
 
             try
             {
-                using (var connection = new SQLiteConnection(_connectionString))
+                using (var connection = new SQLiteConnection(_connectionString)) // Create a new SQLite connection
                 {
+                    await connection.OpenAsync(); // Open the connection asynchronously
 
-                    await connection.OpenAsync();
+                    var query = Constants.Database.GetAllEventsQuery; // SQL query to select all events
 
-                    Console.WriteLine("Connection open");
-
-                    var query = "SELECT Id, Title, Description, Image, Category, Date FROM Events";
-
-                    Console.WriteLine("Query set");
-
-                    using (var command = new SQLiteCommand(query, connection))
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (var command = new SQLiteCommand(query, connection)) // Create a command for the SQL query
+                    using (var reader = await command.ExecuteReaderAsync()) // Execute the command and get a data reader
                     {
-                        Console.WriteLine("Command set and executed");
-                        while (await reader.ReadAsync())
+                        while (await reader.ReadAsync()) // Read the results asynchronously
                         {
-                            Console.WriteLine("read success");
                             var evt = new Event
                             {
-                                Id = reader.GetInt32(0),
-                                Title = reader.GetString(1),
-                                Description = reader.GetString(2),
-                                Image = reader["Image"] as byte[], // Image can be null, so use 'as' for safe casting
-                                Category = reader.GetString(4),
-                                Date = reader.GetDateTime(5)
+                                Id = reader.GetInt32(0), // Get the event ID
+                                Title = reader.GetString(1), // Get the event title
+                                Description = reader.GetString(2), // Get the event description
+                                Image = reader["Image"] as byte[], // Get the event image (can be null)
+                                Category = reader.GetString(4), // Get the event category
+                                Date = reader.GetDateTime(5) // Get the event date
                             };
 
-                            Console.WriteLine("model created");
-
-                            events.Add(evt);
-
-                            Console.WriteLine("event added");
+                            events.Add(evt); // Add the event to the list
                         }
                     }
                 }
             }
-            catch (SQLiteException ex)
+            catch (SQLiteException ex) // Catch any SQLite exceptions
             {
-                throw new ApplicationException("An error occurred while retrieving events. Please try again.", ex);
+                throw new ApplicationException(Constants.Database.FailedEventFetchError, ex); // Rethrow with a custom message
             }
 
-            return events;
+            return events; // Return the list of events
         }
 
         /// <summary>
@@ -251,73 +242,81 @@ namespace CitizenPortalSouthAfrica.Services
         /// <returns>A list of Announcement models.</returns>
         public async Task<List<Announcement>> GetAllAnnouncementsAsync()
         {
-            var announcements = new List<Announcement>();
+            var announcements = new List<Announcement>(); // List to hold announcements retrieved from the database
 
             try
             {
-                using (var connection = new SQLiteConnection(_connectionString))
+                using (var connection = new SQLiteConnection(_connectionString)) // Create a new SQLite connection
                 {
-                    await connection.OpenAsync();
+                    await connection.OpenAsync(); // Open the connection asynchronously
 
-                    var query = "SELECT Id, Title, Description, Image, Category, Date FROM Announcements";
+                    var query = Constants.Database.GetAllAnnouncementsQuery; // SQL query to select all announcements
 
-                    using (var command = new SQLiteCommand(query, connection))
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (var command = new SQLiteCommand(query, connection)) // Create a command for the SQL query
+                    using (var reader = await command.ExecuteReaderAsync()) // Execute the command and get a data reader
                     {
-                        while (await reader.ReadAsync())
+                        while (await reader.ReadAsync()) // Read the results asynchronously
                         {
                             var announcement = new Announcement
                             {
-                                Id = reader.GetInt32(0),
-                                Title = reader.GetString(1),
-                                Description = reader.GetString(2),
-                                Image = reader["Image"] as byte[], // Image can be null, so use 'as' for safe casting
-                                Category = reader.GetString(4),
-                                Date = reader.GetDateTime(5)
+                                Id = reader.GetInt32(0), // Get the announcement ID
+                                Title = reader.GetString(1), // Get the announcement title
+                                Description = reader.GetString(2), // Get the announcement description
+                                Image = reader["Image"] as byte[], // Get the announcement image (can be null)
+                                Category = reader.GetString(4), // Get the announcement category
+                                Date = reader.GetDateTime(5) // Get the announcement date
                             };
 
-                            announcements.Add(announcement);
+                            announcements.Add(announcement); // Add the announcement to the list
                         }
                     }
                 }
             }
-            catch (SQLiteException ex)
+            catch (SQLiteException ex) // Catch any SQLite exceptions
             {
-                throw new ApplicationException("An error occurred while retrieving announcements. Please try again.", ex);
+                throw new ApplicationException(Constants.Database.FailedAnnouncementFetchError, ex); // Rethrow with a custom message
             }
 
-            return announcements;
+            return announcements; // Return the list of announcements
         }
 
+        /// <summary>
+        /// Asynchronously loads events and announcements into their respective sorted dictionaries.
+        /// </summary>
         public async Task LoadEventsAndAnnouncementsAsync()
         {
-            var eventsFromDb = await GetAllEventsAsync();
-            var announcementsFromDb = await GetAllAnnouncementsAsync();
+            var eventsFromDb = await GetAllEventsAsync(); // Retrieve all events from the database
+            var announcementsFromDb = await GetAllAnnouncementsAsync(); // Retrieve all announcements from the database
 
             // Populate the sorted dictionaries
             foreach (var evt in eventsFromDb)
             {
-                if (!SortedEvents.ContainsKey(evt.Category))
-                    SortedEvents[evt.Category] = new List<Event>();
+                if (!SortedEvents.ContainsKey(evt.Category)) // Check if the category exists
+                    SortedEvents[evt.Category] = new List<Event>(); // If not, create a new list for the category
 
-                SortedEvents[evt.Category].Add(evt);
+                SortedEvents[evt.Category].Add(evt); // Add the event to the corresponding category
             }
 
             foreach (var announcement in announcementsFromDb)
             {
-                if (!SortedAnnouncements.ContainsKey(announcement.Category))
-                    SortedAnnouncements[announcement.Category] = new List<Announcement>();
+                if (!SortedAnnouncements.ContainsKey(announcement.Category)) // Check if the category exists
+                    SortedAnnouncements[announcement.Category] = new List<Announcement>(); // If not, create a new list for the category
 
-                SortedAnnouncements[announcement.Category].Add(announcement);
+                SortedAnnouncements[announcement.Category].Add(announcement); // Add the announcement to the corresponding category
             }
         }
 
+        /// <summary>
+        /// Converts an image file to a byte array.
+        /// </summary>
+        /// <param name="imagePath">The file path of the image.</param>
+        /// <returns>A byte array representation of the image or null if the file does not exist.</returns>
         public static byte[] ConvertImageToByteArray(string imagePath)
         {
-            if (!File.Exists(imagePath))
-                return null;
+            if (!File.Exists(imagePath)) // Check if the file exists
+                return null; // Return null if the file does not exist
 
-            return File.ReadAllBytes(imagePath);
+            return File.ReadAllBytes(imagePath); // Read and return the image file as a byte array
         }
     }
 }

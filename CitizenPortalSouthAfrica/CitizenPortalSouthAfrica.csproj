@@ -66,6 +66,7 @@
     <Compile Include="Services\DatabaseInitialiser.cs" />
     <Compile Include="Services\EventAndAnnouncementRepository.cs" />
     <Compile Include="Services\FileManagementService.cs" />
+    <Compile Include="Services\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ReportIssueRepository.cs" />
     <Compile Include="Services\ValidationService.cs" />

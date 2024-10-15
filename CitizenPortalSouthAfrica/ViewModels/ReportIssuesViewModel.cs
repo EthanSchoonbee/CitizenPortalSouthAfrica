@@ -258,10 +258,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
             // Initialize commands
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application
-            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home")); // Command to navigate to home
-            NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("EventsAndAnnouncements"));
-            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show("This feature is currently under development. Please check back later!",
-                                                                                    "Feature Not Available",
+            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
+            NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
+            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage,
+                                                                                    Constants.ErrorMessages.FeatureNotAvaliableHeader,
                                                                                     MessageBoxButton.OK,
                                                                                     MessageBoxImage.Exclamation));
             SubmitCommand = new RelayCommand(OnSubmit); // Command to submit the report
