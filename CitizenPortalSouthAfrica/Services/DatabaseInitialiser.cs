@@ -53,7 +53,7 @@ namespace CitizenPortalSouthAfrica.Services
                 {
                     await connection.OpenAsync();
 
-                    // Use a transaction to ensure that both table creations are completed successfully
+                    // Use a transaction to ensure that all table creations are completed successfully
                     using (var transaction = connection.BeginTransaction())
                     {
                         // Create the ReportIssues table if it does not already exist
@@ -82,6 +82,36 @@ namespace CitizenPortalSouthAfrica.Services
 
                         // Execute the command to create the ReportIssueFiles table
                         using (var command = new SQLiteCommand(createReportIssueFilesTableQuery, connection, transaction))
+                        {
+                            await command.ExecuteNonQueryAsync();
+                        }
+
+                        string createEventsTableQuery = @"
+                        CREATE TABLE IF NOT EXISTS Events (
+                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            Title TEXT NOT NULL,
+                            Description TEXT NOT NULL,
+                            Image BLOB,
+                            Category TEXT NOT NULL,
+                            Date DATETIME NOT NULL
+                        )";
+
+                        using (var command = new SQLiteCommand(createEventsTableQuery, connection))
+                        {
+                            await command.ExecuteNonQueryAsync();
+                        }
+
+                        string createAnnouncementsTableQuery = @"
+                        CREATE TABLE IF NOT EXISTS Announcements (
+                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            Title TEXT NOT NULL,
+                            Description TEXT NOT NULL,
+                            Image BLOB,
+                            Category TEXT NOT NULL,
+                            Date DATETIME NOT NULL
+                        )";
+
+                        using (var command = new SQLiteCommand(createAnnouncementsTableQuery, connection))
                         {
                             await command.ExecuteNonQueryAsync();
                         }
