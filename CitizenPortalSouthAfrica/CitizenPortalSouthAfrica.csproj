@@ -171,13 +171,31 @@
     <Resource Include="world.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\audience-1853662_640.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\istockphoto-1401607744-612x612.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\backgroundImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\event1.jpg" />
+    <Resource Include="Assets\event2.jpg" />
+    <Resource Include="Assets\event3.jpg" />
+    <Resource Include="Assets\event4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\event5.jpg" />
+    <Resource Include="Assets\event6.jpg" />
+    <Resource Include="Assets\event7.jpg" />
+    <Resource Include="Assets\event8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\announcement3.jpg" />
+    <Resource Include="Assets\announcement4.jpg" />
+    <Resource Include="Assets\announcement5.jpg" />
+    <Resource Include="Assets\announcement6.jpg" />
+    <Resource Include="Assets\announcement7.jpg" />
+    <Resource Include="Assets\announcement8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\announcement1.jpg" />
+    <Resource Include="Assets\announcement2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

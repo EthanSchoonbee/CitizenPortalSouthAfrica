@@ -22,6 +22,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CitizenPortalSouthAfrica.Models;
 using CitizenPortalSouthAfrica.Services;
 using GalaSoft.MvvmLight.Command;
@@ -44,6 +45,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
         // Stack to maintain search history order and limit displayed history size
         private Stack<string> _searchHistoryStack = new Stack<string>();
 
+        private DispatcherTimer _debounceTimer;
+
 
         private string _searchedValue; // The current search query entered by the user
         public string SearchedValue
@@ -55,7 +58,6 @@ namespace CitizenPortalSouthAfrica.ViewModels
                 {
                     _searchedValue = value; // Set the new searched value
                     OnPropertyChanged(nameof(SearchedValue)); // Notify that searched value has changed
-
                     // If the searched value is empty, filter events and announcements
                     if (string.IsNullOrWhiteSpace(_searchedValue))
                     {
@@ -163,7 +165,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
             SearchRecommendations = new ObservableCollection<string>();
             OnPropertyChanged(nameof(IsRecommendationsEmpty));
 
-            SearchedValue = string.Empty; // Initialize searched value to empty
+            SearchedValue = string.Empty; // Initialize searched value to empty  
 
             // Initialize commands for user actions
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application
@@ -260,7 +262,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
         /// <summary>
         /// Filters events and announcements based on the current search value.
         /// </summary>
-        public void FilterEventsAndAnnouncements()
+        public async void FilterEventsAndAnnouncements()
         {
             // Clear previous results.
             Events.Clear();

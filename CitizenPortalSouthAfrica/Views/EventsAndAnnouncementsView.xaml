@@ -241,6 +241,7 @@
                                            Visibility="{Binding IsRecommendationsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <ListBox ItemsSource="{Binding SearchRecommendations}" 
                                          HorizontalAlignment="Stretch" 
+                                         MaxHeight="350"
                                          Margin="2,2,2,0" 
                                          BorderThickness="0"
                                          Background="Transparent"

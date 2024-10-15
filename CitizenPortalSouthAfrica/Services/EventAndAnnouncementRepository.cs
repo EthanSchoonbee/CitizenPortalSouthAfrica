@@ -1,8 +1,8 @@
 ﻿//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /* 
  * Author:           Ethan Schoonbee
- * Date Created:     10/09/2024
- * Last Modified:    17/09/2024
+ * Date Created:     13/10/2024
+ * Last Modified:    13/10/2024
  * 
  * Description:
  * This repository class is responsible for handling the retrieval of events and announcements 
@@ -46,151 +46,97 @@ namespace CitizenPortalSouthAfrica.Services
             SortedEvents = new SortedDictionary<string, List<Event>>(); // Initialize the sorted events dictionary
             SortedAnnouncements = new SortedDictionary<string, List<Announcement>>(); // Initialize the sorted announcements dictionary
 
-            SeedTestData(); // Seed the test data into the repository
+
+            //SeedTestData() //Method for seeding the test data into the local SQLite database
         }
 
-        public void SeedTestData()
-        {
-            try
-            {
-                using (var connection = new SQLiteConnection(_connectionString))
-                {
-                    connection.Open();
+        // Example of how data was added to database fr events and annoucements
+        //===============================================================================================================================================================================================
+                                /*public void SeedTestData()
+                                {
+                                    try
+                                    {
+                                        using (var connection = new SQLiteConnection(_connectionString))
+                                        {
+                                            connection.Open();
 
-                    // Example event data
-                    var event1 = new Event
-                    {
-                        Title = "Community Cleanup",
-                        Description = "Join us for a day of cleaning the local park.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\audience-1853662_640.jpg"),
-                        Category = "Community",
-                        Date = DateTime.Now
-                    };
+                                            // Example event data
+                                            var event1 = new Event
+                                            {
+                                                Title = "Community Cleanup",
+                                                Description = "Join us for a day of cleaning the local park.",
+                                                Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event1.jpg"),
+                                                Category = "Community",
+                                                Date = DateTime.Now
+                                            };
 
-                    var event2 = new Event
-                    {
-                        Title = "Food Drive",
-                        Description = "Help us collect food for those in need.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\audience-1853662_640.jpg"),
-                        Category = "Charity",
-                        Date = DateTime.Now
-                    };
 
-                    var event3 = new Event
-                    {
-                        Title = "Cancer Drive",
-                        Description = "Help us collect money for the sick.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\audience-1853662_640.jpg"),
-                        Category = "Charity",
-                        Date = DateTime.Now
-                    };
+                                            // Example announcement data
+                                            var announcement1 = new Announcement
+                                            {
+                                                Title = "New Library Opening",
+                                                Description = "We are excited to announce the opening of the new community library.",
+                                                Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement1.jpg"),
+                                                Category = "Announcement",
+                                                Date = DateTime.Now
+                                            };
 
-                    var event4 = new Event
-                    {
-                        Title = "Blood Drive",
-                        Description = "Help us by donating blood!.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\audience-1853662_640.jpg"),
-                        Category = "Charity",
-                        Date = DateTime.Now
-                    };
 
-                    // Example announcement data
-                    var announcement1 = new Announcement
-                    {
-                        Title = "New Library Opening",
-                        Description = "We are excited to announce the opening of the new community library.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\istockphoto-1401607744-612x612.jpg"),
-                        Category = "Announcement",
-                        Date = DateTime.Now
-                    };
+                                            // Use transactions for consistency
+                                            using (var transaction = connection.BeginTransaction())
+                                            {
+                                                // Insert events if they don't exist
+                                                InsertEventIfNotExists(connection, event1);
 
-                    var announcement2 = new Announcement
-                    {
-                        Title = "Park Renovation",
-                        Description = "The local park will be closed for renovations starting next week.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\istockphoto-1401607744-612x612.jpg"),
-                        Category = "Public Notice",
-                        Date = DateTime.Now
-                    };
+                                                // Insert announcements if they don't exist
+                                                InsertAnnouncementIfNotExists(connection, announcement1);
 
-                    var announcement3 = new Announcement
-                    {
-                        Title = "New Library",
-                        Description = "We are excited to announce the opening of the new community library.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\istockphoto-1401607744-612x612.jpg"),
-                        Category = "Announcement",
-                        Date = DateTime.Now
-                    };
+                                                transaction.Commit();
+                                            }
+                                        }
+                                    }
+                                    catch (SQLiteException ex)
+                                    {
+                                        throw new ApplicationException("An error occurred while seeding test data. Please try again.", ex);
+                                    }
+                                }
 
-                    var announcement4 = new Announcement
-                    {
-                        Title = "Park",
-                        Description = "The local park will be closed for renovations starting next week.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\istockphoto-1401607744-612x612.jpg"),
-                        Category = "Public Notice",
-                        Date = DateTime.Now
-                    };
+                                private void InsertEventIfNotExists(SQLiteConnection connection, Event evt)
+                                {
+                                    var query = "INSERT INTO Events (Title, Description, Image, Category, Date) " +
+                                                "SELECT @Title, @Description, @Image, @Category, @Date " +
+                                                "WHERE NOT EXISTS (SELECT 1 FROM Events WHERE Title = @Title)";
 
-                    // Use transactions for consistency
-                    using (var transaction = connection.BeginTransaction())
-                    {
-                        // Insert events if they don't exist
-                        InsertEventIfNotExists(connection, event1);
-                        InsertEventIfNotExists(connection, event2);
-                        InsertEventIfNotExists(connection, event3);
-                        InsertEventIfNotExists(connection, event4);
+                                    using (var command = new SQLiteCommand(query, connection))
+                                    {
+                                        command.Parameters.AddWithValue("@Title", evt.Title);
+                                        command.Parameters.AddWithValue("@Description", evt.Description);
+                                        command.Parameters.AddWithValue("@Image", evt.Image);
+                                        command.Parameters.AddWithValue("@Category", evt.Category);
+                                        command.Parameters.AddWithValue("@Date", evt.Date);
 
-                        // Insert announcements if they don't exist
-                        InsertAnnouncementIfNotExists(connection, announcement1);
-                        InsertAnnouncementIfNotExists(connection, announcement2);
-                        InsertAnnouncementIfNotExists(connection, announcement3);
-                        InsertAnnouncementIfNotExists(connection, announcement4);
+                                        command.ExecuteNonQuery();
+                                    }
+                                }
 
-                        transaction.Commit();
-                    }
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                throw new ApplicationException("An error occurred while seeding test data. Please try again.", ex);
-            }
-        }
+                                private void InsertAnnouncementIfNotExists(SQLiteConnection connection, Announcement announcement)
+                                {
+                                    var query = "INSERT INTO Announcements (Title, Description, Image, Category, Date) " +
+                                                "SELECT @Title, @Description, @Image, @Category, @Date " +
+                                                "WHERE NOT EXISTS (SELECT 1 FROM Announcements WHERE Title = @Title)";
 
-        private void InsertEventIfNotExists(SQLiteConnection connection, Event evt)
-        {
-            var query = "INSERT INTO Events (Title, Description, Image, Category, Date) " +
-                        "SELECT @Title, @Description, @Image, @Category, @Date " +
-                        "WHERE NOT EXISTS (SELECT 1 FROM Events WHERE Title = @Title)";
+                                    using (var command = new SQLiteCommand(query, connection))
+                                    {
+                                        command.Parameters.AddWithValue("@Title", announcement.Title);
+                                        command.Parameters.AddWithValue("@Description", announcement.Description);
+                                        command.Parameters.AddWithValue("@Image", announcement.Image);
+                                        command.Parameters.AddWithValue("@Category", announcement.Category);
+                                        command.Parameters.AddWithValue("@Date", announcement.Date);
 
-            using (var command = new SQLiteCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@Title", evt.Title);
-                command.Parameters.AddWithValue("@Description", evt.Description);
-                command.Parameters.AddWithValue("@Image", evt.Image);
-                command.Parameters.AddWithValue("@Category", evt.Category);
-                command.Parameters.AddWithValue("@Date", evt.Date);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        private void InsertAnnouncementIfNotExists(SQLiteConnection connection, Announcement announcement)
-        {
-            var query = "INSERT INTO Announcements (Title, Description, Image, Category, Date) " +
-                        "SELECT @Title, @Description, @Image, @Category, @Date " +
-                        "WHERE NOT EXISTS (SELECT 1 FROM Announcements WHERE Title = @Title)";
-
-            using (var command = new SQLiteCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@Title", announcement.Title);
-                command.Parameters.AddWithValue("@Description", announcement.Description);
-                command.Parameters.AddWithValue("@Image", announcement.Image);
-                command.Parameters.AddWithValue("@Category", announcement.Category);
-                command.Parameters.AddWithValue("@Date", announcement.Date);
-
-                command.ExecuteNonQuery();
-            }
-        }
+                                        command.ExecuteNonQuery();
+                                    }
+                                }*/
+        //===============================================================================================================================================================================================
 
         /// <summary>
         /// Asynchronously retrieves all events from the SQLite database.
