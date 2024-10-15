@@ -59,12 +59,17 @@ namespace CitizenPortalSouthAfrica.Services
                 using (var connection = new SQLiteConnection(_connectionString))
                 {
                     connection.Open();
+
+                    // Get the base directory of the application
+                    string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    string assetsPath = Path.Combine(baseDirectory, "Assets");
+
                     // Example event data
                     var event1 = new Event
                     {
                         Title = "Community Cleanup",
                         Description = "Join us for a day of cleaning the local park.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event1.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event1.jpg")),
                         Category = "Community",
                         Date = DateTime.Now
                     };
@@ -72,7 +77,7 @@ namespace CitizenPortalSouthAfrica.Services
                     {
                         Title = "Food Drive",
                         Description = "Help us collect food for those in need.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event2.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event2.jpg")),
                         Category = "Charity",
                         Date = DateTime.Now
                     };
@@ -80,15 +85,15 @@ namespace CitizenPortalSouthAfrica.Services
                     {
                         Title = "Cancer Drive",
                         Description = "Help us collect money for the sick.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event3.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event3.jpg")),
                         Category = "Charity",
                         Date = DateTime.Now
                     };
                     var event4 = new Event
                     {
                         Title = "Blood Drive",
-                        Description = "Help us by donating blood!.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event4.jpg"),
+                        Description = "Help us by donating blood!",
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event4.jpg")),
                         Category = "Charity",
                         Date = DateTime.Now
                     };
@@ -96,43 +101,41 @@ namespace CitizenPortalSouthAfrica.Services
                     {
                         Title = "Pet Adoption Fair",
                         Description = "Join us at the park for a pet adoption fair featuring local shelters.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event5.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event5.jpg")),
                         Category = "Animal Welfare",
                         Date = DateTime.Now.AddDays(15)
                     };
-
                     var event6 = new Event
                     {
                         Title = "Outdoor Movie Night",
                         Description = "Enjoy a classic movie under the stars at the community center.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event6.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event6.jpg")),
                         Category = "Entertainment",
                         Date = DateTime.Now.AddDays(20)
                     };
-
                     var event7 = new Event
                     {
                         Title = "Health & Wellness Workshop",
                         Description = "Participate in a workshop focusing on mental and physical health.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event7.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event7.jpg")),
                         Category = "Health",
                         Date = DateTime.Now.AddDays(25)
                     };
-
                     var event8 = new Event
                     {
                         Title = "Art in the Park",
                         Description = "Join local artists for a day of creativity and fun in the park.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\event8.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "event8.jpg")),
                         Category = "Arts & Culture",
                         Date = DateTime.Now.AddDays(12)
                     };
+
                     // Example announcement data
                     var announcement1 = new Announcement
                     {
                         Title = "New Library Opening",
                         Description = "We are excited to announce the opening of the new community library.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement1.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement1.jpg")),
                         Category = "Announcement",
                         Date = DateTime.Now
                     };
@@ -140,7 +143,7 @@ namespace CitizenPortalSouthAfrica.Services
                     {
                         Title = "Park Renovation",
                         Description = "The local park will be closed for renovations starting next week.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement2.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement2.jpg")),
                         Category = "Public Notice",
                         Date = DateTime.Now
                     };
@@ -148,55 +151,51 @@ namespace CitizenPortalSouthAfrica.Services
                     {
                         Title = "Town Hall Meeting",
                         Description = "Join us for a town hall meeting to discuss community issues.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement3.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement3.jpg")),
                         Category = "Public Notice",
                         Date = DateTime.Now.AddDays(7)
                     };
-
                     var announcement4 = new Announcement
                     {
                         Title = "New Health Clinic Opening",
                         Description = "We are thrilled to announce the opening of a new health clinic in our community.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement4.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement4.jpg")),
                         Category = "Health",
                         Date = DateTime.Now.AddDays(14)
                     };
-
                     var announcement5 = new Announcement
                     {
                         Title = "School Fundraiser",
                         Description = "Support our school fundraiser by participating in the upcoming bake sale.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement5.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement5.jpg")),
                         Category = "Education",
                         Date = DateTime.Now.AddDays(10)
                     };
-
                     var announcement6 = new Announcement
                     {
                         Title = "Winter Clothing Drive",
                         Description = "Donate your gently used winter clothing to help those in need.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement6.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement6.jpg")),
                         Category = "Charity",
                         Date = DateTime.Now.AddDays(21)
                     };
-
                     var announcement7 = new Announcement
                     {
                         Title = "Community Health Fair",
                         Description = "Attend our community health fair for free health screenings and resources.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement7.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement7.jpg")),
                         Category = "Health",
                         Date = DateTime.Now.AddDays(30)
                     };
-
                     var announcement8 = new Announcement
                     {
                         Title = "Volunteer Opportunities",
                         Description = "Sign up to volunteer for various community service projects this month.",
-                        Image = ConvertImageToByteArray("C:\\Users\\schoo\\Desktop\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\CitizenPortalSouthAfrica\\Assets\\announcement8.jpg"),
+                        Image = ConvertImageToByteArray(Path.Combine(assetsPath, "announcement8.jpg")),
                         Category = "Community",
                         Date = DateTime.Now.AddDays(5)
                     };
+
                     // Use transactions for consistency
                     using (var transaction = connection.BeginTransaction())
                     {
