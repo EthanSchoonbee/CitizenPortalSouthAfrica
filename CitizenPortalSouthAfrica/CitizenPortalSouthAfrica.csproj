@@ -159,27 +159,19 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\character.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Assets\character.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\south_africa_coat_of_arms.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Assets\south_africa_coat_of_arms.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\world.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Assets\world.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="world.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\backgroundImage.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Assets\backgroundImage.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\event1.jpg">
