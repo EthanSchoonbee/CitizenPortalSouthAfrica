@@ -229,6 +229,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
         // Commands for user actions
         public ICommand NavigateToHomeCommand { get; } // Command to navigate to the home view
+        public ICommand NavigateToEventsAndAnnouncementsCommand { get; } // Command to navigate to the home view
+        public ICommand NavigateToRequestStatusCommand { get; } // Command to navigate to the request status view
         public ICommand SubmitCommand { get; } // Command to submit the issue report
         public ICommand AttachFilesCommand { get; } // Command to attach files
         public ICommand RemoveFileCommand { get; } // Command to remove an attached file
@@ -256,7 +258,12 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
             // Initialize commands
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application
-            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home")); // Command to navigate to home
+            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
+            NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
+            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage,
+                                                                                    Constants.ErrorMessages.FeatureNotAvaliableHeader,
+                                                                                    MessageBoxButton.OK,
+                                                                                    MessageBoxImage.Exclamation));
             SubmitCommand = new RelayCommand(OnSubmit); // Command to submit the report
             AttachFilesCommand = new RelayCommand(async () => await AttachFilesAsync()); // Command to attach files
             RemoveFileCommand = new RelayCommand<string>(OnRemoveFile); // Command to remove a file

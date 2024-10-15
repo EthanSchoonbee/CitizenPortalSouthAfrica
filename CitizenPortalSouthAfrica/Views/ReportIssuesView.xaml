@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CitizenPortalSouthAfrica.Views"
              mc:Ignorable="d"
-             d:DesignHeight="850" d:DesignWidth="850"
-             Background="White">
+             d:DesignHeight="850" d:DesignWidth="850">
 
     <!-- Define resources for styling components globally -->
     <UserControl.Resources>
@@ -67,6 +66,9 @@
     </UserControl.Resources>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Assets/backgroundImage.png" Stretch="UniformToFill" Opacity="0.2"/>
+        </Grid.Background>
         <!-- Include the menu component at the top of the view -->
         <local:MenuComponentView DockPanel.Dock="Top" />
 

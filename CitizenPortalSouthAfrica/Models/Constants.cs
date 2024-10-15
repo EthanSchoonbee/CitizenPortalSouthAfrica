@@ -24,6 +24,37 @@ namespace CitizenPortalSouthAfrica.Models
     public static class Constants
     {
         /// <summary>
+        /// Text for database connection and queries
+        /// </summary>
+        public static class Database
+        {
+            /// <summary>
+            /// Name of local database file 
+            /// </summary>
+            public const string DatabaseFileName = "IssueReports.db";
+
+            /// <summary>
+            /// Query for getting all events
+            /// </summary>
+            public const string GetAllEventsQuery = "SELECT Id, Title, Description, Image, Category, Date FROM Events";
+
+            /// <summary>
+            /// Error message for failing to retrieve events from database
+            /// </summary>
+            public const string FailedEventFetchError = "An error occurred while retrieving events. Please try again.";
+
+            /// <summary>
+            /// Query for getting all announcements
+            /// </summary>
+            public const string GetAllAnnouncementsQuery = "SELECT Id, Title, Description, Image, Category, Date FROM Announcements";
+
+            /// <summary>
+            /// Error message for failing to retrieve announcements from database
+            /// </summary>
+            public const string FailedAnnouncementFetchError = "An error occurred while retrieving announcements. Please try again.";
+        }
+
+        /// <summary>
         /// Text for guiding users through the reporting process.
         /// </summary>
         public static class GuideText
@@ -86,6 +117,21 @@ namespace CitizenPortalSouthAfrica.Models
             /// Error message for missing description input.
             /// </summary>
             public const string DescriptionRequiredError = "Please ensure all fields are correctly filled.";
+
+            /// <summary>
+            /// Error message header for feature not avaliable.
+            /// </summary>
+            public const string FeatureNotAvaliableHeader = "Feature Not Available";
+
+            /// <summary>
+            /// Error message for feature not avaliable.
+            /// </summary>
+            public const string FeatureNotAvaliableMessage = "This feature is currently under development. Please check back later!";
+
+            /// <summary>
+            /// Error message when loading events and annoucements from database
+            /// </summary>
+            public const string ErrorLoadingEventsAndAnnoucements = "Error loading events and announcements data: ";
         }
 
         /// <summary>
@@ -102,6 +148,32 @@ namespace CitizenPortalSouthAfrica.Models
             /// Title for success messages.
             /// </summary>
             public const string SuccessTitle = "Success";
+        }
+
+        /// <summary>
+        /// Text headers for navigation logic
+        /// </summary>
+        public static class NavigationHeaders
+        {
+            /// <summary>
+            /// Home navigation header
+            /// </summary>
+            public const string Home = "Home";
+
+            /// <summary>
+            /// Home navigation header
+            /// </summary>
+            public const string ReportIssues = "ReportIssues";
+
+            /// <summary>
+            /// Home navigation header
+            /// </summary>
+            public const string EventsAndAnnouncements = "EventsAndAnnouncements";
+
+            /// <summary>
+            /// Home navigation header
+            /// </summary>
+            public const string RequestStatus = "RequestStatus";
         }
     }
 }

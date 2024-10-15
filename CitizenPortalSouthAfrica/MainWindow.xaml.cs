@@ -1,4 +1,8 @@
-﻿using CitizenPortalSouthAfrica.ViewModels;
+﻿using CitizenPortalSouthAfrica.Models;
+using CitizenPortalSouthAfrica.Services;
+using CitizenPortalSouthAfrica.ViewModels;
+using System.IO;
+using System;
 using System.Windows;
 
 namespace CitizenPortalSouthAfrica
@@ -8,6 +12,8 @@ namespace CitizenPortalSouthAfrica
     /// </summary>
     public partial class MainWindow : Window
     {
+
+
         public MainWindow()
         {
             InitializeComponent();

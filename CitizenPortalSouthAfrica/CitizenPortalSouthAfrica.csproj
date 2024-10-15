@@ -58,16 +58,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Announcement.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Event.cs" />
     <Compile Include="Resources\IFileManagementService.cs" />
     <Compile Include="Resources\INavigationService.cs" />
     <Compile Include="Services\DatabaseInitialiser.cs" />
+    <Compile Include="Services\EventAndAnnouncementRepository.cs" />
     <Compile Include="Services\FileManagementService.cs" />
+    <Compile Include="Services\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ReportIssueRepository.cs" />
     <Compile Include="Services\ValidationService.cs" />
+    <Compile Include="ViewModels\EventsAndAnoncementsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ReportIssuesViewModel.cs" />
+    <Compile Include="Views\EventsAndAnnouncementsView.xaml.cs">
+      <DependentUpon>EventsAndAnnouncementsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
@@ -89,6 +97,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\EventsAndAnnouncementsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,6 +169,33 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="world.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\backgroundImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\event1.jpg" />
+    <Resource Include="Assets\event2.jpg" />
+    <Resource Include="Assets\event3.jpg" />
+    <Resource Include="Assets\event4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\event5.jpg" />
+    <Resource Include="Assets\event6.jpg" />
+    <Resource Include="Assets\event7.jpg" />
+    <Resource Include="Assets\event8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\announcement3.jpg" />
+    <Resource Include="Assets\announcement4.jpg" />
+    <Resource Include="Assets\announcement5.jpg" />
+    <Resource Include="Assets\announcement6.jpg" />
+    <Resource Include="Assets\announcement7.jpg" />
+    <Resource Include="Assets\announcement8.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\announcement1.jpg" />
+    <Resource Include="Assets\announcement2.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

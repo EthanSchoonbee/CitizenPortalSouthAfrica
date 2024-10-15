@@ -68,16 +68,15 @@
             <!-- A disabled button for 'Local Events and Announcements' with a tooltip for upcoming feature -->
             <Button Content="Local Events and Announcements" 
                     Command="{Binding NavigateToEventsAndAnnouncementsCommand}" 
-                    IsEnabled="False" 
                     Width="300" Height="50" 
                     Margin="0,0,0,10"
-                    ToolTip="Coming soon..." />
+                    ToolTip="Access local events and announcements" />
 
             <!-- A disabled button for 'Service Request Status' with a tooltip for upcoming feature -->
             <Button Content="Service Request Status" 
                     Command="{Binding NavigateToRequestStatusCommand}" 
-                    IsEnabled="False" 
                     Width="300" Height="50" 
+                    Background="LightGray"
                     Margin="0,0,0,10"
                     ToolTip="Coming soon..."/>
 

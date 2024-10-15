@@ -31,10 +31,10 @@
                     <MenuItem Header="Report Issues" Command="{Binding NavigateToReportIssuesCommand}" />
 
                     <!-- 'Events and Announcements' menu item, currently disabled, will later be used for navigating to Events and Announcements view -->
-                    <MenuItem Header="Events and Announcements" Command="{Binding NavigateToEventsAndAnnouncementsCommand}" IsEnabled="False" />
+                    <MenuItem Header="Events and Announcements" Command="{Binding NavigateToEventsAndAnnouncementsCommand}" />
 
                     <!-- 'Request Status' menu item, currently disabled, will later be used for navigating to Request Status view -->
-                    <MenuItem Header="Request Status" Command="{Binding NavigateToRequestStatusCommand}" IsEnabled="False" />
+                    <MenuItem Header="Request Status" Command="{Binding NavigateToRequestStatusCommand}" Foreground="LightSlateGray"/>
 
                 </MenuItem>
             </Menu>

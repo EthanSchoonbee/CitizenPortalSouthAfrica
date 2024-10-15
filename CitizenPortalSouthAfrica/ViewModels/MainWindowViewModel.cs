@@ -12,9 +12,11 @@
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+using CitizenPortalSouthAfrica.Models;
 using CitizenPortalSouthAfrica.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace CitizenPortalSouthAfrica.ViewModels
@@ -71,6 +73,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
         /// ViewModel for the Report Issues functionality.
         /// </summary>
         public ReportIssuesViewModel ReportIssuesViewModel { get; private set; }
+        public EventsAndAnoncementsViewModel EventsAndAnoncementsViewModel { get; private set; }
+
 
         /// <summary>
         /// Constructor for MainWindowViewModel.
@@ -83,15 +87,18 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
             // Set up commands for navigation and application exit
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication());
-            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("Home"));
-            NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo("ReportIssues"));
+            NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
+            NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.ReportIssues));
+            NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
+            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage,
+                                                                                    Constants.ErrorMessages.FeatureNotAvaliableHeader,
+                                                                                    MessageBoxButton.OK,
+                                                                                    MessageBoxImage.Exclamation));
             // Uncomment and implement these commands when needed
-            // NavigateToEventsAndAnnouncementsCommand = new RelayCommand(OnNavigateToEventsAndAnnouncements);
-            // NavigateToRequestStatusCommand = new RelayCommand(OnNavigateToRequestStatus);
 
             // Initialize the ReportIssuesViewModel
             ReportIssuesViewModel = new ReportIssuesViewModel();
-
+            EventsAndAnoncementsViewModel = new EventsAndAnoncementsViewModel();
             // Set the default view to Home
             CurrentView = new HomeView();
         }
