@@ -17,6 +17,7 @@ using CitizenPortalSouthAfrica.Models;
 using System;
 using System.Data.SQLite;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CitizenPortalSouthAfrica.Services
 {
@@ -53,8 +54,8 @@ namespace CitizenPortalSouthAfrica.Services
                     {
                         // SQL query to insert the report issue into the ReportIssues table
                         var insertQuery = @"
-                        INSERT INTO ReportIssues (Location, Category, Description)
-                        VALUES (@Location, @Category, @Description);
+                        INSERT INTO ReportIssues (Location, Category, Description, Status, CreationDate)
+                        VALUES (@Location, @Category, @Description, @Status, @CreationDate);
                         SELECT last_insert_rowid();";
 
                         int reportId;
@@ -65,6 +66,8 @@ namespace CitizenPortalSouthAfrica.Services
                             command.Parameters.AddWithValue("@Location", reportIssue.Location);
                             command.Parameters.AddWithValue("@Category", reportIssue.Category);
                             command.Parameters.AddWithValue("@Description", reportIssue.Description);
+                            command.Parameters.AddWithValue("@Status", reportIssue.Status);
+                            command.Parameters.AddWithValue("@CreationDate", reportIssue.CreationDate);
 
                             // Execute the query and retrieve the ID of the newly inserted report
                             reportId = Convert.ToInt32(await command.ExecuteScalarAsync());

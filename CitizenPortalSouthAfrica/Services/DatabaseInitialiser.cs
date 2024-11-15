@@ -62,7 +62,9 @@ namespace CitizenPortalSouthAfrica.Services
                             Id INTEGER PRIMARY KEY AUTOINCREMENT,
                             Location TEXT NOT NULL,
                             Category TEXT NOT NULL,
-                            Description TEXT NOT NULL
+                            Description TEXT NOT NULL,
+                            Status TEXT NOT NULL,
+                            CreationDate DATETIME NOT NULL
                         )";
 
                         // Execute the command to create the ReportIssues table

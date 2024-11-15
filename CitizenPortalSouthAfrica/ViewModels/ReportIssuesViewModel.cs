@@ -284,6 +284,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
                 Location = Location,
                 Category = Category,
                 Description = Description,
+                Status = Constants.StatusValues.Open,
+                CreationDate = DateTime.Now,
                 Files = FileData.ToList()
             };
 
