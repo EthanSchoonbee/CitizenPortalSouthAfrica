@@ -1,4 +1,5 @@
 ﻿using CitizenPortalSouthAfrica.Models;
+using CitizenPortalSouthAfrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +25,27 @@ namespace CitizenPortalSouthAfrica.Views
         public ReportStatusView()
         {
             InitializeComponent();
+
+            this.DataContext = new ReportStatusViewModel();
         }
 
         private void OnReportClicked(object sender, MouseButtonEventArgs e)
         {
-            var border = sender as Border;
-            var report = border?.DataContext as ReportIssue;
+            // Get the clicked report
+            var report = (sender as FrameworkElement).DataContext as Report;
+
             if (report != null)
             {
-                // Show detailed view (e.g., open a dialog or navigate to a new page)
-                MessageBox.Show($"Showing details for: {report.Id}");
+                // Toggle the IsExpanded property
+                report.IsExpanded = !report.IsExpanded;
+
+                // Inform the view model that the report has changed
+                var viewModel = this.DataContext as ReportStatusViewModel;
+                if (viewModel != null)
+                {
+                    // You can either directly notify the UI or manipulate the reports collection
+                    viewModel.OnPropertyChanged(nameof(viewModel.Reports));
+                }
             }
         }
     }

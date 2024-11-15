@@ -8,6 +8,9 @@
              d:DesignHeight="850" d:DesignWidth="850">
     <UserControl.Resources>
 
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+
         <!-- Style for individual report block -->
         <Style x:Key="ReportBlockStyle" TargetType="Border">
             <Setter Property="Width" Value="237"/>
@@ -112,12 +115,15 @@
                                     <Border Style="{StaticResource ReportBlockStyle}" MouseLeftButtonUp="OnReportClicked"
                                             BorderThickness="1" BorderBrush="Wheat">
                                         <Border.Effect>
-                                                <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="5" Opacity="0.5" />
-                                            </Border.Effect>
-                                            <StackPanel>
+                                            <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="5" Opacity="0.5" />
+                                        </Border.Effect>
+                                        <StackPanel>
                                             <TextBlock Text="{Binding Name}" FontWeight="Bold" />
                                             <TextBlock Text="{Binding Location}" />
                                             <TextBlock Text="{Binding Status}" Foreground="DarkGreen"/>
+                                            <!-- Only show expanded content if IsExpanded is true -->
+                                            <TextBlock Text="Details: [Insert additional report info here]"
+                                                       Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>

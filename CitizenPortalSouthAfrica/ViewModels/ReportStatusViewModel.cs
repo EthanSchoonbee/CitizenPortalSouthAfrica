@@ -16,7 +16,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
 {
     public class ReportStatusViewModel: INotifyPropertyChanged
     {
-        public ObservableCollection<ReportIssue> Reports { get; set; }
+        public ObservableCollection<Report> Reports { get; set; }
 
         private readonly FileManagementService _fileManagementService; // Service for file operations
         private readonly ValidationService _validationService; // Service for form validation
@@ -36,19 +36,13 @@ namespace CitizenPortalSouthAfrica.ViewModels
             _validationService = new ValidationService();
             _repository = new ReportIssueRepository();
 
-            Reports = new ObservableCollection<ReportIssue>
+            Reports = new ObservableCollection<Report>
             {
-                new ReportIssue { Id = 1, Location = "Location A" },
-                new ReportIssue { Id = 2, Location = "Location B" },
-                new ReportIssue { Id = 3, Location = "Location C" },
-                new ReportIssue { Id = 4, Location = "Location D" },
-                new ReportIssue { Id = 5, Location = "Location E" },
-                new ReportIssue { Id = 6, Location = "Location F" },
-                new ReportIssue { Id = 7, Location = "Location G" },
-                new ReportIssue { Id = 8, Location = "Location H" },
-                new ReportIssue { Id = 9, Location = "Location I" },
-                new ReportIssue { Id = 10, Location = "Location J" },
-                // Add more reports
+                new Report { Id = 1, Location = "Location A", Name = "Report A", Status = "Open", IsExpanded = false },
+                new Report { Id = 2, Location = "Location B", Name = "Report B", Status = "Closed", IsExpanded = false },
+                new Report { Id = 3, Location = "Location C", Name = "Report C", Status = "In Progress", IsExpanded = false },
+                new Report { Id = 4, Location = "Location D", Name = "Report D", Status = "Open", IsExpanded = false },
+                new Report { Id = 5, Location = "Location E", Name = "Report E", Status = "Closed", IsExpanded = false },
             };
 
             // Initialize commands
@@ -62,7 +56,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Method to raise the PropertyChanged event
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
