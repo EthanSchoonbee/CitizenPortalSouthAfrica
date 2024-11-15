@@ -14,9 +14,10 @@ using System.Windows.Input;
 
 namespace CitizenPortalSouthAfrica.ViewModels
 {
-
     public class ReportStatusViewModel: INotifyPropertyChanged
     {
+        public ObservableCollection<ReportIssue> Reports { get; set; }
+
         private readonly FileManagementService _fileManagementService; // Service for file operations
         private readonly ValidationService _validationService; // Service for form validation
         private readonly ReportIssueRepository _repository; // Repository for report issue data
@@ -34,6 +35,21 @@ namespace CitizenPortalSouthAfrica.ViewModels
             _fileManagementService = new FileManagementService();
             _validationService = new ValidationService();
             _repository = new ReportIssueRepository();
+
+            Reports = new ObservableCollection<ReportIssue>
+            {
+                new ReportIssue { Id = 1, Location = "Location A" },
+                new ReportIssue { Id = 2, Location = "Location B" },
+                new ReportIssue { Id = 3, Location = "Location C" },
+                new ReportIssue { Id = 4, Location = "Location D" },
+                new ReportIssue { Id = 5, Location = "Location E" },
+                new ReportIssue { Id = 6, Location = "Location F" },
+                new ReportIssue { Id = 7, Location = "Location G" },
+                new ReportIssue { Id = 8, Location = "Location H" },
+                new ReportIssue { Id = 9, Location = "Location I" },
+                new ReportIssue { Id = 10, Location = "Location J" },
+                // Add more reports
+            };
 
             // Initialize commands
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application

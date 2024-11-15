@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CitizenPortalSouthAfrica.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,17 @@ namespace CitizenPortalSouthAfrica.Views
         public ReportStatusView()
         {
             InitializeComponent();
+        }
+
+        private void OnReportClicked(object sender, MouseButtonEventArgs e)
+        {
+            var border = sender as Border;
+            var report = border?.DataContext as ReportIssue;
+            if (report != null)
+            {
+                // Show detailed view (e.g., open a dialog or navigate to a new page)
+                MessageBox.Show($"Showing details for: {report.Id}");
+            }
         }
     }
 }

@@ -6,8 +6,24 @@
              xmlns:local="clr-namespace:CitizenPortalSouthAfrica.Views"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="850">
-    <!-- Define resources for styling components globally -->
     <UserControl.Resources>
+
+        <!-- Style for individual report block -->
+        <Style x:Key="ReportBlockStyle" TargetType="Border">
+            <Setter Property="Width" Value="237"/>
+            <Setter Property="Height" Value="237"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="FloralWhite"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGreen"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
 
         <!-- Global button style for consistent appearance -->
         <Style TargetType="Button">
@@ -68,22 +84,51 @@
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Assets/backgroundImage.png" Stretch="UniformToFill" Opacity="0.2"/>
         </Grid.Background>
-        <!-- Include the menu component at the top of the view -->
+
+        <!-- Include the menu component -->
         <local:MenuComponentView DockPanel.Dock="Top" />
 
-        <!-- StackPanel for stacking form elements vertically -->
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <!-- Additional Components -->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0">
+            <TextBlock Text="Issues Reported" FontSize="25" FontWeight="Bold" Foreground="DarkGreen" 
+                        HorizontalAlignment="Center" />
 
-            <!-- Header text for the form -->
-            <TextBlock Text="Report Issue Status" 
-                   FontSize="25" FontWeight="Bold" 
-                   Foreground="DarkGreen"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Center" />
+            <!-- Main Content Area -->
+            <Grid Margin="20">
+                <!-- Scrollable white block for reports -->
+                <Border Background="White" CornerRadius="10" Padding="10" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" 
+                                  Height="640" Width="800">
+                        <ItemsControl ItemsSource="{Binding Reports}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <!-- Use WrapPanel for dynamic layout -->
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource ReportBlockStyle}" MouseLeftButtonUp="OnReportClicked"
+                                            BorderThickness="1" BorderBrush="Wheat">
+                                        <Border.Effect>
+                                                <DropShadowEffect Color="Gray" BlurRadius="10" ShadowDepth="5" Opacity="0.5" />
+                                            </Border.Effect>
+                                            <StackPanel>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding Location}" />
+                                            <TextBlock Text="{Binding Status}" Foreground="DarkGreen"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
 
-            <!-- Return buttons -->
             <Button Content="Return" Command="{Binding NavigateToHomeCommand}" />
-
         </StackPanel>
+        
     </Grid>
 </UserControl>
