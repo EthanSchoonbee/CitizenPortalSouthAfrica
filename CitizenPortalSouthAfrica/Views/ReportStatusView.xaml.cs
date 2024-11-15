@@ -33,20 +33,26 @@ namespace CitizenPortalSouthAfrica.Views
 
         private void OnReportClicked(object sender, MouseButtonEventArgs e)
         {
-            // Get the clicked report
             var report = (sender as FrameworkElement).DataContext as Report;
 
             if (report != null)
             {
-                // Toggle the IsExpanded property
-                report.IsExpanded = !report.IsExpanded;
-
-                // Inform the view model that the report has changed
+                // Access the view model
                 var viewModel = this.DataContext as ReportStatusViewModel;
+
                 if (viewModel != null)
                 {
-                    // You can either directly notify the UI or manipulate the reports collection
-                    viewModel.OnPropertyChanged(nameof(viewModel.Reports));
+                    // Collapse all reports except the clicked one
+                    foreach (var r in viewModel.Reports)
+                    {
+                        if (r != report)
+                        {
+                            r.IsExpanded = false;
+                        }
+                    }
+
+                    // Toggle the clicked report
+                    report.IsExpanded = !report.IsExpanded;
                 }
             }
         }

@@ -38,11 +38,11 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
             Reports = new ObservableCollection<Report>
             {
-                new Report { Id = 1, Location = "Location A", Name = "Report A", Status = "Open", IsExpanded = false },
-                new Report { Id = 2, Location = "Location B", Name = "Report B", Status = "Closed", IsExpanded = false },
-                new Report { Id = 3, Location = "Location C", Name = "Report C", Status = "In Progress", IsExpanded = false },
-                new Report { Id = 4, Location = "Location D", Name = "Report D", Status = "Open", IsExpanded = false },
-                new Report { Id = 5, Location = "Location E", Name = "Report E", Status = "Closed", IsExpanded = false },
+                new Report { Id = 1, Location = "Location A", Name = "Report A", Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Open", IsExpanded = false },
+                new Report { Id = 2, Location = "Location B", Name = "Report B", Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
+                new Report { Id = 3, Location = "Location C", Name = "Report C", Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "In Progress", IsExpanded = false },
+                new Report { Id = 4, Location = "Location D", Name = "Report D", Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Open", IsExpanded = false },
+                new Report { Id = 5, Location = "Location E", Name = "Report E", Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
             };
 
             // Initialize commands
