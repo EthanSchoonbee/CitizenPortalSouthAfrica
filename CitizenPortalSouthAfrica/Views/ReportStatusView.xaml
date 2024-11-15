@@ -48,37 +48,10 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Style for 'Remove File' button -->
-        <Style x:Key="RemoveFileButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Red"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Margin" Value="70,0,0,0"/>
-            <Setter Property="Width" Value="15"/>
-            <Setter Property="Height" Value="15"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Content" Value="X"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Triggers>
-                <!-- Change background when hovering over the remove button -->
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="DarkRed"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
         <!-- Style for header text blocks -->
         <Style x:Key="HeaderTextBlock" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="14"/>
-        </Style>
-
-        <!-- Style for error messages displayed in text blocks -->
-        <Style x:Key="ErrorTextBlock" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="Red"/>
-            <Setter Property="FontSize" Value="12"/>
         </Style>
 
     </UserControl.Resources>
@@ -123,7 +96,7 @@
                                             <TextBlock Text="{Binding Status}" Foreground="DarkGreen"/>
                                             <!-- Only show expanded content if IsExpanded is true -->
                                             <TextBlock Text="Details: [Insert additional report info here]"
-                                                       Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                       TextWrapping="Wrap"  Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>
