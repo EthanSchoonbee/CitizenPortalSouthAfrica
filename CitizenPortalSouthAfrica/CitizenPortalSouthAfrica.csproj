@@ -73,6 +73,7 @@
     <Compile Include="ViewModels\EventsAndAnoncementsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ReportIssuesViewModel.cs" />
+    <Compile Include="ViewModels\ReportStatusViewModel.cs" />
     <Compile Include="Views\EventsAndAnnouncementsView.xaml.cs">
       <DependentUpon>EventsAndAnnouncementsView.xaml</DependentUpon>
     </Compile>
@@ -84,6 +85,9 @@
     </Compile>
     <Compile Include="Views\ReportIssuesView.xaml.cs">
       <DependentUpon>ReportIssuesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportStatusView.xaml.cs">
+      <DependentUpon>ReportStatusView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReportIssuesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
