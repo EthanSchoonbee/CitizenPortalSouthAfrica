@@ -11,7 +11,8 @@
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <services:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        
+        <services:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter" />
+
         <!-- Style for individual report block -->
         <Style x:Key="ReportBlockStyle" TargetType="Border">
             <Setter Property="Width" Value="237" />
@@ -237,28 +238,16 @@
                 </Border>
             </Grid>
 
-            <!-- <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" 
-              Height="100" Width="785" 
-              Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-    <ListView ItemsSource="{Binding RelatedReports}" MaxHeight="200">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="0,0,10,0" TextWrapping="NoWrap" />
-                    <TextBlock Text="{Binding Location}" Margin="0,0,10,0" FontSize="14" TextWrapping="NoWrap" />
-                    <TextBlock Text="{Binding Status}" Margin="0,0,10,0" FontSize="14" TextWrapping="NoWrap" Foreground="DarkGreen"/>
-                </StackPanel>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
-</ScrollViewer> -->
             <TextBlock Text="Reports in the same location: " 
                        FontWeight="Bold" FontSize="18"
                        HorizontalAlignment="Center"
                        Foreground="DarkGreen" />
 
+
+
             <Grid Margin="10">
                 <Border Background="White" BorderBrush="DarkGreen" BorderThickness="3" CornerRadius="0" Padding="10" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0">
+
                     <ListView Height="100" Width="785" ItemsSource="{Binding RelatedReports}" MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -271,6 +260,15 @@
                             </ListView.ItemTemplate>
                         </ListView>
                 </Border>
+
+                <!-- Message displayed when there are no related reports -->
+                <TextBlock Text="No related reports available."
+                           Foreground="Red"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Visibility="{Binding RelatedReports.Count, Converter={StaticResource EmptyToVisibilityConverter}}" />
             </Grid>
             <Button Content="Return" Command="{Binding NavigateToHomeCommand}" />
         </StackPanel>
@@ -287,5 +285,7 @@
                Opacity="0.8" 
                TextAlignment="Center"
                Padding="10" />
+
+        
     </Grid>
 </UserControl>

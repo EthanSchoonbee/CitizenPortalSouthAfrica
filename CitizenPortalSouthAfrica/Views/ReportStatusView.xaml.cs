@@ -51,53 +51,22 @@ namespace CitizenPortalSouthAfrica.Views
                         }
                     }
 
-                    viewModel.FetchRelatedReports(report);
+                    // Check if the clicked report is being collapsed
+                    if (report.IsExpanded)
+                    {
+                        // Clear related reports if collapsing
+                        viewModel.ClearRelatedReports();
+                    }
+                    else
+                    {
+                        // Fetch related reports if expanding
+                        viewModel.FetchRelatedReports(report);
+                    }
 
                     // Toggle the clicked report
                     report.IsExpanded = !report.IsExpanded;
                 }
             }
-        }
-
-        private void OnToggleExpandCollapse(object sender, RoutedEventArgs e)
-        {
-            var toggleButton = sender as ToggleButton;
-            var report = toggleButton?.DataContext as Report; // Adjust based on your actual model
-
-            if (report != null)
-            {
-                var expandedContent = FindVisualChild<Grid>(toggleButton);
-                var animation = (Storyboard)FindResource("ExpandCollapseAnimation");
-
-                if (expandedContent.Visibility == Visibility.Collapsed)
-                {
-                    expandedContent.Visibility = Visibility.Visible;
-                    animation.Begin(expandedContent);
-
-                }
-                else
-                {
-                    expandedContent.Visibility = Visibility.Collapsed;
-                }
-            }
-        }
-
-        // Helper method to find a child of type T
-        private static T FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                if (child is T)
-                    return (T)child;
-                else
-                {
-                    T childOfChild = FindVisualChild<T>(child);
-                    if (childOfChild != null)
-                        return childOfChild;
-                }
-            }
-            return null;
         }
     }
 }

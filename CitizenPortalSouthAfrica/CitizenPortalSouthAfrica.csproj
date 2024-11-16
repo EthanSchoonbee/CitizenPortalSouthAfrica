@@ -68,6 +68,7 @@
     <Compile Include="Resources\IFileManagementService.cs" />
     <Compile Include="Resources\INavigationService.cs" />
     <Compile Include="Services\DatabaseInitialiser.cs" />
+    <Compile Include="Services\EmptyToVisibilityConverter .cs" />
     <Compile Include="Services\EventAndAnnouncementRepository.cs" />
     <Compile Include="Services\FileManagementService.cs" />
     <Compile Include="Services\InvertedBooleanToVisibilityConverter.cs" />

@@ -207,6 +207,12 @@ namespace CitizenPortalSouthAfrica.ViewModels
             return relatedReports;
         }
 
+        // Method to clear related reports
+        public void ClearRelatedReports()
+        {
+            RelatedReports.Clear();
+        }
+
         private void ClearSearchQuery()
         {
             SearchQuery = "";
