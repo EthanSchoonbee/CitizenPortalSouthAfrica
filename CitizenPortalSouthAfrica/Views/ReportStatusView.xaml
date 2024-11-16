@@ -15,7 +15,7 @@
         <!-- Style for individual report block -->
         <Style x:Key="ReportBlockStyle" TargetType="Border">
             <Setter Property="Width" Value="237" />
-            <Setter Property="Height" Value="150" />
+            <Setter Property="Height" Value="175" />
             <Setter Property="Margin" Value="10" />
             <Setter Property="Padding" Value="10" />
             <Setter Property="Background" Value="FloralWhite" />
@@ -106,23 +106,31 @@
         <!-- Include the menu component -->
         <local:MenuComponentView DockPanel.Dock="Top" />
 
-        
         <!-- Additional Components -->
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0">
             <TextBlock Text="Issues Reported" FontSize="25" FontWeight="Bold" Foreground="DarkGreen" 
                         HorizontalAlignment="Center" />
 
+            <!-- Search Bar -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,20">
+                <TextBox Width="400" Height="30" Margin="0,0,10,0"
+                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Content="Clear" Command="{Binding ClearCommand}" Width="100" Height="30" Margin="0,1,0,0"/>
+            </StackPanel>
+
             <!-- Main Content Area -->
             <Grid Margin="10">
+
                 <!-- Scrollable white block for reports -->
                 <Border Background="White" BorderBrush="DarkGreen" BorderThickness="3" CornerRadius="0" Padding="10" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0">
+
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" 
-                                  Height="640" Width="800" >
+                                  Height="550" Width="800" >
                         <ScrollViewer.Resources>
                             <!-- Use the ThinScrollBar for ScrollBar -->
                             <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinScrollBar}" />
                         </ScrollViewer.Resources>
-                        <ItemsControl ItemsSource="{Binding Reports}" VerticalAlignment="Top">
+                        <ItemsControl ItemsSource="{Binding FilteredReports}" VerticalAlignment="Top">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <!-- Use StackPanel for vertical alignment -->
@@ -156,6 +164,13 @@
                                                 <TextBlock Text="{Binding Category}" FontSize="14" Foreground="Gray" />
                                             </StackPanel>
 
+                                            <!-- Creation Date -->
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0"
+                                                        Visibility="{Binding IsExpanded, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" >
+                                                <TextBlock Text="Submitted: " FontWeight="Bold" FontSize="14" />
+                                                <TextBlock Text="{Binding CreationDate, StringFormat='{}{0:yyyy/MM/dd HH:mm}'}" FontSize="14" Foreground="Gray" />
+                                            </StackPanel>
+
                                             <!-- Status -->
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0"
                                                         Visibility="{Binding IsExpanded, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" >
@@ -182,11 +197,18 @@
                                                         <TextBlock Text="{Binding Location}" FontSize="14" Foreground="Gray" />
                                                     </StackPanel>
 
-                                                    <!-- Location -->
+                                                    <!-- Category -->
                                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,2,0,0"
                                                                 Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" >
                                                         <TextBlock Text="Category: " FontWeight="Bold" FontSize="14" />
                                                         <TextBlock Text="{Binding Category}" FontSize="14" Foreground="Gray" />
+                                                    </StackPanel>
+
+                                                    <!-- Creation Date -->
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0"
+                                                                Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" >
+                                                        <TextBlock Text="Submitted: " FontWeight="Bold" FontSize="14" />
+                                                        <TextBlock Text="{Binding CreationDate, StringFormat='{}{0:yyyy/MM/dd HH:mm}'}" FontSize="14" Foreground="Gray" />
                                                     </StackPanel>
 
                                                     <!-- Status -->
@@ -216,6 +238,18 @@
 
             <Button Content="Return" Command="{Binding NavigateToHomeCommand}" />
         </StackPanel>
-        
+
+        <!-- Overlay message for empty reports -->
+        <TextBlock Text="No reports found!" 
+               FontSize="20" 
+               FontWeight="Bold" 
+               Foreground="Red" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center"
+               Visibility="{Binding IsFilteredReportsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+               Background="White" 
+               Opacity="0.8" 
+               TextAlignment="Center"
+               Padding="10" />
     </Grid>
 </UserControl>

@@ -196,6 +196,15 @@ namespace CitizenPortalSouthAfrica.Models
             /// </summary>
             public const string InProgress = "In Progress";
         }
+
+        /// <summary>
+        /// Red-Black BST Node colors
+        /// </summary>
+        public enum NodeColor
+        {
+            Red,
+            Black
+        }
     }
 }
 //---------------....oooOO0_END_OF_FILE_0OOooo....---------------\\

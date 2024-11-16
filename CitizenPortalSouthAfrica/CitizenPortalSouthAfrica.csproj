@@ -62,6 +62,8 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportBST.cs" />
+    <Compile Include="Models\ReportNode.cs" />
     <Compile Include="Resources\IFileManagementService.cs" />
     <Compile Include="Resources\INavigationService.cs" />
     <Compile Include="Services\DatabaseInitialiser.cs" />
