@@ -51,6 +51,8 @@ namespace CitizenPortalSouthAfrica.Views
                         }
                     }
 
+                    viewModel.FetchRelatedReports(report);
+
                     // Toggle the clicked report
                     report.IsExpanded = !report.IsExpanded;
                 }
@@ -71,6 +73,7 @@ namespace CitizenPortalSouthAfrica.Views
                 {
                     expandedContent.Visibility = Visibility.Visible;
                     animation.Begin(expandedContent);
+
                 }
                 else
                 {

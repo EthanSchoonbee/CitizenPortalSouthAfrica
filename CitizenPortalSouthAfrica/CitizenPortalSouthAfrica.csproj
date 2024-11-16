@@ -61,6 +61,7 @@
     <Compile Include="Models\Announcement.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Graph.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportBST.cs" />
     <Compile Include="Models\ReportNode.cs" />
