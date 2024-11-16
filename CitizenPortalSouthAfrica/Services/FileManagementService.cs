@@ -102,7 +102,7 @@ namespace CitizenPortalSouthAfrica.Services
             {
                 Multiselect = true,  // Allows multiple file selection
                 Filter = "Image Files|*.jpg;*.jpeg;*.png|Document Files|*.pdf;*.docx|Text Files|*.txt|Excel Files|*.xlsx|PowerPoint Files|*.pptx|Video Files|*.mp4;*.mkv|Zip Files|*.zip|All Files|*.*",
-                FilterIndex = 3
+                FilterIndex = 8
             };
         }
 

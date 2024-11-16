@@ -34,7 +34,7 @@
                     <MenuItem Header="Events and Announcements" Command="{Binding NavigateToEventsAndAnnouncementsCommand}" />
 
                     <!-- 'Request Status' menu item, currently disabled, will later be used for navigating to Request Status view -->
-                    <MenuItem Header="Request Status" Command="{Binding NavigateToRequestStatusCommand}" Foreground="LightSlateGray"/>
+                    <MenuItem Header="Request Status" Command="{Binding NavigateToRequestStatusCommand}"/>
 
                 </MenuItem>
             </Menu>

@@ -171,10 +171,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application
             NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
             NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.ReportIssues));
-            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage, // Display message for under development feature
-                                                                                     Constants.ErrorMessages.FeatureNotAvaliableHeader,
-                                                                                     MessageBoxButton.OK,
-                                                                                     MessageBoxImage.Exclamation));
+            NavigateToRequestStatusCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.RequestStatus));
+
             FilterCommand = new RelayCommand(FilterEventsAndAnnouncements); // Command to filter events and announcements
             SearchCommand = new RelayCommand(PerformSearch); // Command to perform a search
 

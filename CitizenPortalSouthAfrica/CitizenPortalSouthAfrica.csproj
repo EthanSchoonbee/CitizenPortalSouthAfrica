@@ -61,9 +61,14 @@
     <Compile Include="Models\Announcement.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Graph.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportBST.cs" />
+    <Compile Include="Models\ReportNode.cs" />
     <Compile Include="Resources\IFileManagementService.cs" />
     <Compile Include="Resources\INavigationService.cs" />
     <Compile Include="Services\DatabaseInitialiser.cs" />
+    <Compile Include="Services\EmptyToVisibilityConverter .cs" />
     <Compile Include="Services\EventAndAnnouncementRepository.cs" />
     <Compile Include="Services\FileManagementService.cs" />
     <Compile Include="Services\InvertedBooleanToVisibilityConverter.cs" />
@@ -73,6 +78,7 @@
     <Compile Include="ViewModels\EventsAndAnoncementsViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ReportIssuesViewModel.cs" />
+    <Compile Include="ViewModels\ReportStatusViewModel.cs" />
     <Compile Include="Views\EventsAndAnnouncementsView.xaml.cs">
       <DependentUpon>EventsAndAnnouncementsView.xaml</DependentUpon>
     </Compile>
@@ -84,6 +90,9 @@
     </Compile>
     <Compile Include="Views\ReportIssuesView.xaml.cs">
       <DependentUpon>ReportIssuesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportStatusView.xaml.cs">
+      <DependentUpon>ReportStatusView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +119,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ReportIssuesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

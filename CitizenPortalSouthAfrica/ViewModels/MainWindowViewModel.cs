@@ -74,6 +74,7 @@ namespace CitizenPortalSouthAfrica.ViewModels
         /// </summary>
         public ReportIssuesViewModel ReportIssuesViewModel { get; private set; }
         public EventsAndAnoncementsViewModel EventsAndAnoncementsViewModel { get; private set; }
+        public ReportStatusViewModel ReportStatusViewModel { get; private set; }
 
 
         /// <summary>
@@ -90,15 +91,13 @@ namespace CitizenPortalSouthAfrica.ViewModels
             NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
             NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.ReportIssues));
             NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
-            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage,
-                                                                                    Constants.ErrorMessages.FeatureNotAvaliableHeader,
-                                                                                    MessageBoxButton.OK,
-                                                                                    MessageBoxImage.Exclamation));
+            NavigateToRequestStatusCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.RequestStatus));
             // Uncomment and implement these commands when needed
 
             // Initialize the ReportIssuesViewModel
             ReportIssuesViewModel = new ReportIssuesViewModel();
             EventsAndAnoncementsViewModel = new EventsAndAnoncementsViewModel();
+            ReportStatusViewModel = new ReportStatusViewModel();
             // Set the default view to Home
             CurrentView = new HomeView();
         }

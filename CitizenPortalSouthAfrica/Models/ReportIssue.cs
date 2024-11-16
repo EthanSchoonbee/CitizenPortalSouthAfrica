@@ -18,6 +18,7 @@
  */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+using System;
 using System.Collections.Generic;
 
 namespace CitizenPortalSouthAfrica.Models
@@ -47,6 +48,16 @@ namespace CitizenPortalSouthAfrica.Models
         /// Gets or sets a detailed description of the issue.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// The status of a report.
+        /// </summary>
+        public string Status { get; set; }
+
+        /// <summary>
+        /// The creation date of a report.
+        /// </summary>
+        public DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Gets or sets a list of file data (byte arrays) associated with the issue.

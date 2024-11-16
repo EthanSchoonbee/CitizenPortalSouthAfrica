@@ -76,9 +76,8 @@
             <Button Content="Service Request Status" 
                     Command="{Binding NavigateToRequestStatusCommand}" 
                     Width="300" Height="50" 
-                    Background="LightGray"
                     Margin="0,0,0,10"
-                    ToolTip="Coming soon..."/>
+                    ToolTip="View submitted report statuses"/>
 
         </StackPanel>
     </Grid>

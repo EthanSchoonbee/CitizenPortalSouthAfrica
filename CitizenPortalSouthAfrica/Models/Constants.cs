@@ -175,6 +175,36 @@ namespace CitizenPortalSouthAfrica.Models
             /// </summary>
             public const string RequestStatus = "RequestStatus";
         }
+
+        /// <summary>
+        /// Status
+        /// </summary>
+        public static class StatusValues
+        {
+            /// <summary>
+            /// Open status
+            /// </summary>
+            public const string Open = "Open";
+
+            /// <summary>
+            /// Closed status
+            /// </summary>
+            public const string Closed = "Closed";
+
+            /// <summary>
+            /// In progress status
+            /// </summary>
+            public const string InProgress = "In Progress";
+        }
+
+        /// <summary>
+        /// Red-Black BST Node colors
+        /// </summary>
+        public enum NodeColor
+        {
+            Red,
+            Black
+        }
     }
 }
 //---------------....oooOO0_END_OF_FILE_0OOooo....---------------\\

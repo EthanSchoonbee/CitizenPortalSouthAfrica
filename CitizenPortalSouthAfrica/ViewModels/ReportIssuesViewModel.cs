@@ -260,10 +260,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
             ExitCommand = new RelayCommand(() => Services.NavigationService.GetInstance().ExitApplication()); // Command to exit the application
             NavigateToHomeCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.Home));
             NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
-            NavigateToRequestStatusCommand = new RelayCommand(() => MessageBox.Show(Constants.ErrorMessages.FeatureNotAvaliableMessage,
-                                                                                    Constants.ErrorMessages.FeatureNotAvaliableHeader,
-                                                                                    MessageBoxButton.OK,
-                                                                                    MessageBoxImage.Exclamation));
+            NavigateToRequestStatusCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.RequestStatus));
+
             SubmitCommand = new RelayCommand(OnSubmit); // Command to submit the report
             AttachFilesCommand = new RelayCommand(async () => await AttachFilesAsync()); // Command to attach files
             RemoveFileCommand = new RelayCommand<string>(OnRemoveFile); // Command to remove a file
@@ -286,6 +284,8 @@ namespace CitizenPortalSouthAfrica.ViewModels
                 Location = Location,
                 Category = Category,
                 Description = Description,
+                Status = Constants.StatusValues.Open,
+                CreationDate = DateTime.Now,
                 Files = FileData.ToList()
             };
 

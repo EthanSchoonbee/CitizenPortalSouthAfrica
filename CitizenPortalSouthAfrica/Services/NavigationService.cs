@@ -93,6 +93,10 @@ namespace CitizenPortalSouthAfrica.Services
                     // Navigates to the EventsAndAnnouncementsView and binds the associated ViewModel
                     _mainWindowViewModel.CurrentView = new EventsAndAnnouncementsView { DataContext = _mainWindowViewModel.EventsAndAnoncementsViewModel };
                     break;
+                case "RequestStatus":
+                    // Navigates to the ReportStatusView and binds the associated ViewModel
+                    _mainWindowViewModel.CurrentView = new ReportStatusView { DataContext = _mainWindowViewModel.ReportStatusViewModel };
+                    break;
             }
         }
 
