@@ -15,12 +15,22 @@ namespace CitizenPortalSouthAfrica.Models
             _adjacencyList = new Dictionary<T, List<T>>();
         }
 
+        public bool ContainsEdge(T from, T to)
+        {
+            return _adjacencyList.ContainsKey(from) && _adjacencyList[from].Contains(to);
+        }
+
         public void AddEdge(T location, T reportId)
         {
             if (!_adjacencyList.ContainsKey(location))
                 _adjacencyList[location] = new List<T>();
 
             _adjacencyList[location].Add(reportId);
+        }
+
+        public void Clear()
+        {
+            _adjacencyList.Clear();
         }
 
         public List<T> GetReportsAtLocation(T location)

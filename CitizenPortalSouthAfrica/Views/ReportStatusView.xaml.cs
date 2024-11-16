@@ -29,6 +29,15 @@ namespace CitizenPortalSouthAfrica.Views
             InitializeComponent();
 
             this.DataContext = new ReportStatusViewModel();
+
+            // Subscribe to the Loaded event
+            this.Loaded += ReportStatusView_Loaded;
+        }
+
+        private void ReportStatusView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = this.DataContext as ReportStatusViewModel;
+            viewModel?.RefreshReports(); // Refresh reports when the view is loaded
         }
 
         private void OnReportClicked(object sender, MouseButtonEventArgs e)

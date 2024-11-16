@@ -106,27 +106,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
         private void LoadReportsFromDatabase()
         {
             // Fetch reports from SQLite database
-            //List<Report> reportsFromDb = _repository.GetReports(); // Assuming your repository fetches reports
+            _reportBST = _repository.GetReportBST();
 
-            List<Report> reportsFromDb = new List<Report>
-            {
-                new Report { Id = 1, Location = "Location A", Name = "Report 1", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Open", IsExpanded = false },
-                new Report { Id = 2, Location = "Location A", Name = "Report 2", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
-                new Report { Id = 3, Location = "Location A", Name = "Report 3", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "In Progress", IsExpanded = false },
-                new Report { Id = 4, Location = "Location B", Name = "Report 4", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Open", IsExpanded = false },
-                new Report { Id = 5, Location = "Location B", Name = "Report 5", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
-                new Report { Id = 6, Location = "Location A", Name = "Report 6", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
-                new Report { Id = 7, Location = "Location A", Name = "Report 7", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
-                new Report { Id = 8, Location = "Location C", Name = "Report 8", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
-                new Report { Id = 9, Location = "Location C", Name = "Report 9", CreationDate = DateTime.Parse("2024-11-15 20:35:55.4071655"), Category = "Cat", Description= "This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!This is a test description and isnt real so dont think about it too much and ignore it infact cause fuck this shit!", Status = "Closed", IsExpanded = false },
-
-            };
-
-            // Insert each report into the BST
-            foreach (var report in reportsFromDb)
-            {
-                _reportBST.Insert(report);
-            }
+            Reports.Clear();
+            _locationGraph.Clear();
 
             // Use in-order traversal to get sorted reports
             var sortedReports = _reportBST.InOrderTraversal();
@@ -135,7 +118,12 @@ namespace CitizenPortalSouthAfrica.ViewModels
             foreach (var report in sortedReports)
             {
                 Reports.Add(report);
-                _locationGraph.AddEdge(report.Location, report.Id.ToString());
+
+                // Check if the edge already exists before adding
+                if (!_locationGraph.ContainsEdge(report.Location, report.Id.ToString()))
+                {
+                    _locationGraph.AddEdge(report.Location, report.Id.ToString());
+                }
             }
         }
 
@@ -217,6 +205,12 @@ namespace CitizenPortalSouthAfrica.ViewModels
         {
             SearchQuery = "";
             FilterReports();  // Refresh the filtered reports
+        }
+
+        public void RefreshReports()
+        {
+            LoadReportsFromDatabase(); // Re-fetch reports from the database
+            FilterReports(); // Update the filtered reports
         }
 
         // Event to notify the UI of property changes

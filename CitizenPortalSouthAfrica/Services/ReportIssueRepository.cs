@@ -111,6 +111,58 @@ namespace CitizenPortalSouthAfrica.Services
                 throw;
             }
         }
+
+
+        public ReportBST GetReportBST()
+        {
+            var reportBST = new ReportBST();
+
+            try
+            {
+                using (var connection = new SQLiteConnection(_connectionString))
+                {
+                    connection.Open();
+                    var query = "SELECT Id, Location, Category, Description, Status, CreationDate FROM ReportIssues";
+                    using (var command = new SQLiteCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var report = new Report();
+
+                                // Safely retrieve each column
+                                report.Id = reader["Id"] is DBNull ? 0 : Convert.ToInt32(reader["Id"]);
+                                report.Location = reader["Location"] as string ?? string.Empty;
+                                report.Name = "Report " + (reader["Id"] is DBNull ? "Unknown" : reader["Id"].ToString());
+                                report.Category = reader["Category"] as string ?? string.Empty;
+                                report.Description = reader["Description"] as string ?? string.Empty;
+                                report.Status = reader["Status"] as string ?? string.Empty;
+
+                                // Handle CreationDate conversion
+                                if (reader["CreationDate"] is DBNull)
+                                {
+                                    report.CreationDate = DateTime.MinValue; // Or a suitable default value
+                                }
+                                else
+                                {
+                                    report.CreationDate = Convert.ToDateTime(reader["CreationDate"]);
+                                }
+
+                                reportBST.Insert(report); // Insert directly into the BST
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                throw new ApplicationException("An error occurred while retrieving reports.", ex);
+            }
+
+            return reportBST;
+        }
+
     }
 }
 //---------------....oooOO0_END_OF_FILE_0OOooo....---------------\\
