@@ -2,7 +2,7 @@
 /* 
  * Author:           Ethan Schoonbee
  * Date Created:     10/09/2024
- * Last Modified:    17/09/2024
+ * Last Modified:    16/10/2024
  * 
  * Description:
  * This service class is responsible for handling the saving of report issues into an SQLite database
@@ -113,6 +113,11 @@ namespace CitizenPortalSouthAfrica.Services
         }
 
 
+        /// <summary>
+        /// Retrieves all reports from the SQLite database and stores them in a binary search tree (BST).
+        /// </summary>
+        /// <returns>A binary search tree containing all report issues.</returns>
+        /// <exception cref="ApplicationException">Thrown when a database error occurs.</exception>
         public ReportBST GetReportBST()
         {
             var reportBST = new ReportBST();
@@ -157,12 +162,12 @@ namespace CitizenPortalSouthAfrica.Services
             }
             catch (SQLiteException ex)
             {
+                // Capture and rethrow database-related errors.
                 throw new ApplicationException("An error occurred while retrieving reports.", ex);
             }
 
-            return reportBST;
+            return reportBST; // Return tree
         }
-
     }
 }
 //---------------....oooOO0_END_OF_FILE_0OOooo....---------------\\

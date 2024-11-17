@@ -88,6 +88,7 @@ namespace CitizenPortalSouthAfrica.Services
                             await command.ExecuteNonQueryAsync();
                         }
 
+                        // Create the Events table if it does not already exist
                         string createEventsTableQuery = @"
                         CREATE TABLE IF NOT EXISTS Events (
                             Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -98,11 +99,13 @@ namespace CitizenPortalSouthAfrica.Services
                             Date DATETIME NOT NULL
                         )";
 
+                        // Execute the command to create the Events table
                         using (var command = new SQLiteCommand(createEventsTableQuery, connection))
                         {
                             await command.ExecuteNonQueryAsync();
                         }
 
+                        // Create the Announcements table if it does not already exist
                         string createAnnouncementsTableQuery = @"
                         CREATE TABLE IF NOT EXISTS Announcements (
                             Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -113,6 +116,7 @@ namespace CitizenPortalSouthAfrica.Services
                             Date DATETIME NOT NULL
                         )";
 
+                        // Execute the command to create the Announcements table
                         using (var command = new SQLiteCommand(createAnnouncementsTableQuery, connection))
                         {
                             await command.ExecuteNonQueryAsync();
