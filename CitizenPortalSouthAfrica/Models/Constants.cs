@@ -161,17 +161,17 @@ namespace CitizenPortalSouthAfrica.Models
             public const string Home = "Home";
 
             /// <summary>
-            /// Home navigation header
+            /// ReportIssues navigation header
             /// </summary>
             public const string ReportIssues = "ReportIssues";
 
             /// <summary>
-            /// Home navigation header
+            /// EventsAndAnnouncements navigation header
             /// </summary>
             public const string EventsAndAnnouncements = "EventsAndAnnouncements";
 
             /// <summary>
-            /// Home navigation header
+            /// RequestStatus navigation header
             /// </summary>
             public const string RequestStatus = "RequestStatus";
         }

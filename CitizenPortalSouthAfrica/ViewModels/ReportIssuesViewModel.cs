@@ -2,7 +2,7 @@
 /* 
  * Author:           Ethan Schoonbee
  * Date Created:     10/09/2024
- * Last Modified:    17/09/2024
+ * Last Modified:    16/11/2024
  * 
  * Description:
  * ViewModel for the ReportIssues view in the CitizenPortalSouthAfrica application.
@@ -270,6 +270,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
 
         // O(1) complexity: Submits the report after validating the form
+        /// <summary>
+        /// Handles the submission of the report. It validates the form, creates a new report issue, 
+        /// saves it to the repository, and clears the input fields.
+        /// </summary>
         private async void OnSubmit()
         {
             // Validate the form before proceeding
@@ -299,7 +303,11 @@ namespace CitizenPortalSouthAfrica.ViewModels
             MessageBox.Show(Constants.SuccessMessages.IssueSaved, "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // Validates the form fields and sets error messages if validation fails
+        /// <summary>
+        /// Validates the form fields (Location, Category, Description) 
+        /// and sets error messages if validation fails.
+        /// </summary>
+        /// <returns>True if the form is valid, false otherwise.</returns>
         private bool ValidateForm()
         {
             // Validate the form fields using the ValidationService
@@ -316,6 +324,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
         }
 
         // O(1) complexity: Clears all input fields and attached files
+        /// <summary>
+        /// Clears the input fields (Location, Category, Description) 
+        /// and resets the collections for file names and file data.
+        /// </summary>
         private void ClearInputs()
         {
             // Reset location, category, and description fields
@@ -335,6 +347,11 @@ namespace CitizenPortalSouthAfrica.ViewModels
         }
 
         // O(n) complexity: Asynchronously attaches files and updates the file collections
+        /// <summary>
+        /// Asynchronously attaches files using the FileManagementService, 
+        /// adds them to the file data and file names collections, 
+        /// and triggers UI update notifications.
+        /// </summary>
         private async Task AttachFilesAsync()
         {
             // Use the FileManagementService to retrieve files and their names
@@ -361,6 +378,11 @@ namespace CitizenPortalSouthAfrica.ViewModels
         }
 
         // O(1) complexity: Removes a file from the attached files list based on its name
+        /// <summary>
+        /// Removes the specified file from the attached files list 
+        /// and updates the UI to reflect the changes.
+        /// </summary>
+        /// <param name="fileName">The name of the file to remove.</param>
         private void OnRemoveFile(string fileName)
         {
             // Find the index of the file in the FileNames collection
@@ -378,6 +400,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
         }
 
         // O(1) complexity: Updates the percentage of form completion based on filled fields
+        /// <summary>
+        /// Updates the form completion percentage based on how many fields (Location, Category, Description) 
+        /// have been filled out. It also updates the guide text.
+        /// </summary>
         public void UpdateFormCompletionPercentage()
         {
             const int numberOfFields = 3;
@@ -393,7 +419,10 @@ namespace CitizenPortalSouthAfrica.ViewModels
             GuideText = GetGuideText();
         }
 
-        // Returns the appropriate guide text based on form completion and clicked fields
+        /// <summary>
+        /// Returns the appropriate guide text based on form completion and clicked fields.
+        /// </summary>
+        /// <returns>A string representing the guide text for the form.</returns>
         private string GetGuideText()
         {
             // If the form is fully completed, show the completion guide
@@ -421,6 +450,9 @@ namespace CitizenPortalSouthAfrica.ViewModels
         }
 
         // O(1) complexity: Debounce method to delay actions by resetting the timer
+        /// <summary>
+        /// Resets the debounce timer to delay actions and prevent rapid consecutive method calls.
+        /// </summary>
         private void DebounceAction()
         {
             // Stop and restart the debounce timer
@@ -428,7 +460,14 @@ namespace CitizenPortalSouthAfrica.ViewModels
             _debounceTimer.Start();
         }
 
-        // Helper method to update a field's value, trigger property changes, and invoke additional actions
+        /// <summary>
+        /// Helper method to update a field's value, trigger property changes, and invoke additional actions.
+        /// </summary>
+        /// <typeparam name="T">The type of the field.</typeparam>
+        /// <param name="field">The field to update.</param>
+        /// <param name="value">The new value for the field.</param>
+        /// <param name="propertyName">The property name (automatically provided by the CallerMemberName attribute).</param>
+        /// <param name="onChanged">An optional action to execute when the field is changed.</param>
         private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null, Action onChanged = null)
         {
             // Only update the field if the value has changed
@@ -447,11 +486,14 @@ namespace CitizenPortalSouthAfrica.ViewModels
         // Event to notify the UI of property changes
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Method to raise the PropertyChanged event
+        /// <summary>
+        /// Raises the PropertyChanged event to notify the UI that a property has changed.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }
+//---------------....oooOO0_END_OF_FILE_0OOooo....---------------\\

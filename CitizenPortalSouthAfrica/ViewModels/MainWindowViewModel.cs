@@ -65,15 +65,20 @@ namespace CitizenPortalSouthAfrica.ViewModels
 
         /// <summary>
         /// Command to navigate to the Request Status view.
-        /// (Currently commented out for future implementation)
         /// </summary>
         public RelayCommand NavigateToRequestStatusCommand { get; private set; }
 
-        /// <summary>
+        /// <summary>S
         /// ViewModel for the Report Issues functionality.
         /// </summary>
         public ReportIssuesViewModel ReportIssuesViewModel { get; private set; }
+        /// <summary>
+        /// ViewModel for the Events and Anoncements functionality.
+        /// </summary>
         public EventsAndAnoncementsViewModel EventsAndAnoncementsViewModel { get; private set; }
+        /// <summary>
+        /// ViewModel for the Report Status functionality.
+        /// </summary>
         public ReportStatusViewModel ReportStatusViewModel { get; private set; }
 
 
@@ -92,7 +97,6 @@ namespace CitizenPortalSouthAfrica.ViewModels
             NavigateToReportIssuesCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.ReportIssues));
             NavigateToEventsAndAnnouncementsCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.EventsAndAnnouncements));
             NavigateToRequestStatusCommand = new RelayCommand(() => Services.NavigationService.GetInstance().NavigateTo(Constants.NavigationHeaders.RequestStatus));
-            // Uncomment and implement these commands when needed
 
             // Initialize the ReportIssuesViewModel
             ReportIssuesViewModel = new ReportIssuesViewModel();
